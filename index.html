@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insight - Inside</title>
+    <title>Insight - Landing</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* small landing overrides kept here so index works standalone */
+    </style>
 </head>
 <body>
-    <header>
+    <header class="site-header">
         <h1>Комикс Инсайт(д)</h1>
-        <h2>Глава 2: Любовь</h2>
-        <p>Автор: Оля Суслик</p>
+        <p class="lead">Выберите главу</p>
     </header>
 
-    <main>
-        <div id="grid" class="grid" aria-live="polite"></div>
-        <div id="loading" class="center" hidden>
-            <div class="loader" aria-hidden="true"></div>
-        </div>
-        <div id="end" class="center" hidden>— end —</div>
-        <div id="sentinel"></div>
+    <main class="landing">
+        <section class="cards">
+            <a class="book-card" href="chapter1.html">
+                <div class="book" style="background-image:url('Chapter1_webp/Chapter 1 - 01.webp')" aria-hidden="true"></div>
+                <div class="caption">Глава 1: Закопаться в себе</div>
+            </a>
+
+            <a class="book-card" href="chapter2.html">
+                <div class="book" style="background-image:url('images_webp/1.webp')" aria-hidden="true"></div>
+                <div class="caption">Глава 2: Любовь</div>
+            </a>
+        </section>
     </main>
-    <script src="script.js"></script>
+
 </body>
 </html>
