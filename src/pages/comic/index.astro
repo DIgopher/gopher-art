@@ -37,7 +37,7 @@ for (const dir of comicDirs) {
             <ul class="comic-card__chapters">
               {chapters.map((chapter) => (
                 <li key={chapter}>
-                  <a href={`${import.meta.env.BASE_URL}comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}`}>
+                  <a href={`${import.meta.env.BASE_URL}comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/`}>
                     {chapter.replace(/[-_]/g, " ")}
                   </a>
                 </li>
