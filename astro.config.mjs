@@ -6,6 +6,6 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx()],
-  site: 'https://username.github.io',
+  site: 'https://digopher.github.io',
   base: '/gopher-art/'
 });
