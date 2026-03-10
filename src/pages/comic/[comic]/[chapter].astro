@@ -1,0 +1,170 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { promises as fs } from "fs";
+import path from "path";
+
+// 1. Получаем базовый путь из конфига (например, "/my-repo/")
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ""); 
+
+export async function getStaticPaths() {
+  // ... ваш существующий код getStaticPaths остается без изменений ...
+  const comicsRoot = path.join(process.cwd(), "public", "comics");
+  const comicDirs = await fs.readdir(comicsRoot, { withFileTypes: true });
+  const paths = [];
+  for (const comicDir of comicDirs) {
+    if (!comicDir.isDirectory()) continue;
+    const comic = comicDir.name;
+    const chaptersRoot = path.join(comicsRoot, comic);
+    const chapterDirs = await fs.readdir(chaptersRoot, { withFileTypes: true });
+    for (const chapterDir of chapterDirs) {
+      if (!chapterDir.isDirectory()) continue;
+      const chapter = chapterDir.name;
+      paths.push({ params: { comic, chapter } });
+    }
+  }
+  return paths;
+}
+
+const { comic, chapter } = Astro.params;
+const comicsRoot = path.join(process.cwd(), "public", "comics");
+const chapterDir = path.join(comicsRoot, comic, chapter);
+
+function numericSort(a, b) {
+  const numA = Number(a.replace(/\D/g, "")) || 0;
+  const numB = Number(b.replace(/\D/g, "")) || 0;
+  if (numA !== numB) return numA - numB;
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+}
+
+const rawFiles = await fs.readdir(chapterDir);
+const imageFiles = rawFiles
+  .filter((file) => /\.(png|jpe?g|webp|gif)$/i.test(file))
+  .sort(numericSort);
+
+// 2. Добавляем baseUrl к путям картинок, чтобы они открывались на GitHub Pages
+const images = imageFiles.map((file) =>
+  `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(file)}`
+);
+
+const chapterNames = (
+  await fs.readdir(path.join(comicsRoot, comic), { withFileTypes: true })
+)
+  .filter((f) => f.isDirectory())
+  .map((f) => f.name)
+  .sort(numericSort);
+---
+
+<BaseLayout>
+  <header class="comic-header">
+    <div class="comic-header__title">
+      <h1>Комикс</h1>
+      <p class="comic-header__subtitle">{comic.replace(/[-_]/g, " ")}</p>
+    </div>
+    <div class="comic-controls">
+      <div class="comic-controls__group">
+        <label for="chapter-select" class="comic-label">Глава</label>
+        <select id="chapter-select" class="comic-select">
+          {chapterNames.map((name) => (
+            <option selected={name === chapter} value={name}>
+              {name.replace(/[-_]/g, " ")}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div class="comic-controls__group comic-controls__modes">
+        <span class="comic-label">Режим</span>
+        <button type="button" class="comic-mode-btn" data-mode="infinite">Бесконечная</button>
+        <button type="button" class="comic-mode-btn" data-mode="paged">Постраничная</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="comic-reader">
+    <div id="scroll-container" class="comic-scroll" style="display: none;">
+      {images.map((src, index) => (
+        <figure class="comic-page">
+          <img src={src} alt={`Страница ${index + 1}`} loading="lazy" />
+          <figcaption>Страница {index + 1}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div id="paged-container" class="comic-paged" style="display: none;">
+      <div class="comic-pager">
+        <button type="button" id="prev-page" class="comic-pager__nav">← Назад</button>
+        <span id="page-label" class="comic-pager__label">1 / {images.length}</span>
+        <button type="button" id="next-page" class="comic-pager__nav">Вперед →</button>
+      </div>
+      <div class="comic-page-frame">
+        <img id="comic-page-img" src={images[0]} alt="Загрузка..." />
+      </div>
+    </div>
+  </main>
+
+  <script define:vars={{ comic, images, baseUrl }}>
+    const chapterSelect = document.getElementById("chapter-select");
+    const modeButtons = document.querySelectorAll(".comic-mode-btn");
+    const scrollContainer = document.getElementById("scroll-container");
+    const pagedContainer = document.getElementById("paged-container");
+    const prevButton = document.getElementById("prev-page");
+    const nextButton = document.getElementById("next-page");
+    const pageImg = document.getElementById("comic-page-img");
+    const pageLabel = document.getElementById("page-label");
+
+    let url = new URL(window.location.href);
+    let currentMode = url.searchParams.get("mode") || "infinite";
+    let currentPage = Math.max(0, parseInt(url.searchParams.get("page") || "0"));
+
+    function updateUI() {
+      scrollContainer.style.display = currentMode === "infinite" ? "block" : "none";
+      pagedContainer.style.display = currentMode === "paged" ? "block" : "none";
+
+      modeButtons.forEach(btn => {
+        btn.classList.toggle("is-active", btn.dataset.mode === currentMode);
+      });
+
+      if (currentMode === "paged") {
+        if (currentPage >= images.length) currentPage = images.length - 1;
+        pageImg.src = images[currentPage];
+        pageLabel.textContent = `${currentPage + 1} / ${images.length}`;
+        prevButton.disabled = currentPage <= 0;
+        nextButton.disabled = currentPage >= images.length - 1;
+      }
+
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("mode", currentMode);
+      if (currentMode === "paged") newUrl.searchParams.set("page", currentPage);
+      else newUrl.searchParams.delete("page");
+      window.history.replaceState({}, "", newUrl);
+    }
+
+    chapterSelect?.addEventListener("change", (e) => {
+      const newChapter = e.target.value;
+      
+      // 4. Используем baseUrl для формирования корректного пути к новой главе
+      // Путь теперь будет /repo-name/comics/comic-name/chapter-name
+      const nextPath = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(newChapter)}`;
+      const nextUrl = new URL(nextPath, window.location.origin);
+      
+      nextUrl.searchParams.set("mode", currentMode);
+      window.location.href = nextUrl.toString();
+    });
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentMode = btn.dataset.mode;
+        updateUI();
+      });
+    });
+
+    const navigate = (step) => {
+      currentPage = Math.max(0, Math.min(images.length - 1, currentPage + step));
+      updateUI();
+    };
+
+    prevButton?.addEventListener("click", () => navigate(-1));
+    nextButton?.addEventListener("click", () => navigate(1));
+
+    updateUI();
+  </script>
+</BaseLayout>

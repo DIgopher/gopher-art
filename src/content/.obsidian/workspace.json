@@ -1,0 +1,199 @@
+{
+  "main": {
+    "id": "7f71a40b7d9dcff7",
+    "type": "split",
+    "children": [
+      {
+        "id": "74155f3b314bd58e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4e48fc90fe8b2a2c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/EV-ECM interplay.mdx",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "EV-ECM interplay"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d288989068c00b80",
+    "type": "split",
+    "children": [
+      {
+        "id": "8b893d52a9a67ce6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d2932179240cde13",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "efb716917f075846",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "4f484370477e6769",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "a8c6bca18e4c092b",
+    "type": "split",
+    "children": [
+      {
+        "id": "e1189f3e57bf4a12",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7b7f3852abd610a5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "projects/EV-ECM interplay.mdx",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки для EV-ECM interplay"
+            }
+          },
+          {
+            "id": "c5d92bf3385342d6",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "projects/EV-ECM interplay.mdx",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки из EV-ECM interplay"
+            }
+          },
+          {
+            "id": "13622840c0d18531",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "c510e50e0ce0d501",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "367eaf2dd68f403b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "projects/EV-ECM interplay.mdx",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура EV-ECM interplay"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false,
+      "edit-mdx:New .mdx file": false
+    }
+  },
+  "active": "4e48fc90fe8b2a2c",
+  "lastOpenFiles": [
+    "2024-05-12.md",
+    "projects/EV-ECM interplay.mdx",
+    "projects/forest-poster.md",
+    "blog/Сладкая история.mdx",
+    "blog/my-first-post.md",
+    "blog/Сладкая история.md",
+    "Без названия.base",
+    "blog/Заметка для теста.md",
+    "blog/second.md"
+  ]
+}
