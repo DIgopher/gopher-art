@@ -1,0 +1,33 @@
+---
+interface Props {
+  imgSrc?: string;
+  imgAlt?: string;
+  reverse?: boolean; // If true, image comes before text
+  align?: 'start' | 'center' | 'end';
+}
+
+const { 
+  imgSrc, 
+  imgAlt = "", 
+  reverse = false,
+  align = 'start'
+} = Astro.props;
+---
+
+<div class={`project-block ${reverse ? 'project-block--reverse' : ''}`} style={`--block-align: ${align};`}>
+  {imgSrc && reverse && (
+    <div class="project-block__media">
+      <img src={imgSrc} alt={imgAlt} />
+    </div>
+  )}
+  
+  <div class="project-block__content">
+    <slot />
+  </div>
+
+  {imgSrc && !reverse && (
+    <div class="project-block__media">
+      <img src={imgSrc} alt={imgAlt} />
+    </div>
+  )}
+</div>

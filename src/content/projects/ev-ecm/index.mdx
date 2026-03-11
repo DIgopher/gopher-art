@@ -1,0 +1,69 @@
+---
+title: "Иллюстрации для статьи Direct and cell-mediated EV-ECM interplay"
+date: 2024-07-21
+tags: ["Научная иллюстрация", "Проект"]
+cover: "/comics/02.jpg"
+---
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+
+import hero from "./direct_and_cell_mediated_ev_ecm_interplay_title_1x.webp"
+import fig1 from "./direct_and_cell_mediated_ev_ecm_interplay_1_1x.webp"
+import fig2 from "./direct_and_cell_mediated_ev_ecm_interplay_2_1x.webp"
+import fig3 from "./direct_and_cell_mediated_ev_ecm_interplay_3_1x.webp"
+import fig4 from "./direct_and_cell_mediated_ev_ecm_interplay_4_1x.webp"
+import fig5 from "./direct_and_cell_mediated_ev_ecm_interplay_5_1x.webp"
+
+<ProjectHero src={hero} alt="EV secretion and uptake illustration" />
+
+<ProjectHeader 
+  title="Иллюстрации для статьи Direct and cell-mediated EV-ECM interplay"
+  category="Проект"
+  type="Научная иллюстрация"
+  year="2024"
+>
+  <p>Вместе с коллегами я написала обзор на тему везикул, к которому нужно было подготовить иллюстрации.</p>
+  <p>Основными задачами было сделать иллюстрации к каждому разделу статьи, в едином стиле и информативными, что тоже создавало некоторые сложности.</p>
+</ProjectHeader>
+
+<ProjectLayout>
+
+    <ProjectImage slot="left" mobileOrder={3} src={fig1} alt="ECM-bound EVs and Matrix vesicles" />
+    
+    <ProjectText slot="left" mobileOrder={4} variant="captioned" caption="Постановка иллюстраций">
+      Уровень информативности на иллюстрациях разный. На одной надо было отразить различные способы формирования везикул и названия, которые они получили в научной практике. На другой же представить многообразие веществ, с помощью которых везикулы влияют на внеклеточный матрикс.
+    </ProjectText>
+
+    <ProjectImage slot="left" mobileOrder={5} src={fig3} alt="EVs effect on ECM" />
+
+    <ProjectText slot="left" mobileOrder={6} variant="normal">
+      В процессе работы я анализировала как такие же процессы визуализируются в других статьях, выделяла основные аспекты текущего обзора. Всё это было нужно, чтобы получить иллюстрации, на основании которых читатель мог получить достаточно полную информацию о том, что он найдет в обзоре.
+    </ProjectText>
+
+    <ProjectImage slot="left" mobileOrder={8} src={fig5} alt="Extracellular Vesicles overview" />
+
+
+    <ProjectText slot="right" mobileOrder={2} variant="large">
+      В итоге вышло 6 иллюстраций, включая одну иллюстрацию к абстракту
+    </ProjectText>
+
+    <ProjectImage slot="right" mobileOrder={1} src={fig2} alt="EVs from 3D vs 2D cell cultures" />
+    
+    <ProjectImage slot="right" mobileOrder={7} src={fig4} alt="Computer modelling of EV-ECM interactions" />
+
+    <ProjectText slot="right" mobileOrder={9} variant="captioned" caption="Одна картинка вместо тысячи слов">
+      Финальная иллюстрация, которая используется в заключении и в абстракте (в урезанном виде) – самая нагруженная информационно, но при этом дает представление о предмете обсуждения: полном цикле взаимодействия везикул и внеклеточного матрикса.
+    </ProjectText>
+    
+</ProjectLayout>
+
+<ProjectInfo>
+  <p>Работа над иллюстрациями велась в Procreate и Figma.</p>
+  <p>Обзорная статья была опубликована 21 июля 2024 года.<br/>
+  <a href="#" style="text-decoration: underline; color: #111;">Ссылка на публикацию</a></p>
+</ProjectInfo>

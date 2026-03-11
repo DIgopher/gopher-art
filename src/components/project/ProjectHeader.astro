@@ -1,0 +1,32 @@
+---
+interface Props {
+  category?: string;
+  title: string;
+  subtitle?: string;
+  type?: string;
+  year?: string;
+}
+
+const { 
+  category = "Проект", 
+  title, 
+  subtitle,
+  type = "Научная иллюстрация", 
+  year 
+} = Astro.props;
+---
+
+<header class="project-header">
+  <div class="project-header__category">{category}</div>
+  <h1 class="project-header__title">{title}</h1>
+  {subtitle && <h2 class="project-header__subtitle">{subtitle}</h2>}
+  
+  <div class="project-header__meta">
+    {type && <span class="project-meta-item">{type}</span>}
+    {year && <span class="project-meta-item">{year}</span>}
+  </div>
+
+  <div class="project-header__intro">
+    <slot />
+  </div>
+</header>

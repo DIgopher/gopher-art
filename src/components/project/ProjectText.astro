@@ -1,0 +1,24 @@
+---
+interface Props {
+  variant?: 'large' | 'normal' | 'captioned';
+  caption?: string;
+}
+
+const { 
+  variant = 'normal',
+  caption
+} = Astro.props;
+
+const sizeClass = variant === "large" ? "large" : "normal";
+
+const { mobileOrder } = Astro.props;
+---
+
+<div class="project-text" style={`--mobile-order:${mobileOrder}`}>
+  {variant === 'captioned' && caption && (
+    <span class="project-text__caption">{caption}</span>
+  )}
+  <div class={`project-text--${sizeClass}`}>
+    <slot />
+  </div>
+</div>

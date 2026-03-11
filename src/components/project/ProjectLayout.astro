@@ -1,0 +1,26 @@
+---
+interface Props {
+  columns?: number | string;
+  gap?: string;
+  align?: "start" | "center" | "end" | "stretch";
+}
+
+const { columns = 2, gap = "2rem", align = "start" } = Astro.props;
+
+// We use an inline style variable to pass the dynamic column count and gap to CSS
+const styleVars = `
+  --layout-cols: ${columns};
+  --layout-gap: ${gap};
+  --layout-align: ${align};
+`;
+---
+
+<section class="project-two-col">
+  <div class="col">
+    <slot name="left" />
+  </div>
+
+  <div class="col">
+    <slot name="right" />
+  </div>
+</section>

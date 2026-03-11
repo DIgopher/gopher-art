@@ -1,0 +1,7 @@
+---
+import { Image } from "astro:assets";
+const { src, alt = "" } = Astro.props;
+const { mobileOrder } = Astro.props;
+---
+
+<Image src={src} alt={alt} class="project-image" style={`--mobile-order:${mobileOrder}`}/>
