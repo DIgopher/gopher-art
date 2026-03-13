@@ -1,20 +1,23 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
 ---
 
 <BaseLayout>
-  <h1>Blog</h1>
-
-  <ul>
-    {posts.map(post => (
-      <li>
-        <a href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
-          {post.data.title}
-        </a>
-      </li>
-    ))}
-  </ul>
+  <section class="first-section">
+    <h1 class="h1 cards-block__header">Блог</h1>
+    <div class="blog-grid">
+      {posts.map(post => (
+        <BlogCard
+          title={post.data.title}
+          slug={post.id}
+          date={post.data.date}
+          description={post.data.description}
+        />
+      ))}
+    </div>
+</section> 
 </BaseLayout>

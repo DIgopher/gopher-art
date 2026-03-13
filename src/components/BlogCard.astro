@@ -1,0 +1,16 @@
+---
+const { title, slug, date, description } = Astro.props;
+const url = `${import.meta.env.BASE_URL}blog/${slug}/`;
+const formattedDate = date ? new Date(date).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+---
+
+<a href={url} class="blog-card">
+  <div class="blog-card__inner">
+    <div class="blog-card__top">
+      <time class="blog-card__date">{formattedDate}</time>
+      <h3 class="blog-card__title">{title}</h3>
+      {description && <p class="blog-card__description">{description}</p>}
+    </div>
+    <span class="blog-card__arrow">→</span>
+  </div>
+</a>

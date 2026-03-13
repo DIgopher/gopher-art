@@ -18,6 +18,7 @@ const { Content } = await render(post);
 <BaseLayout>
   <header class="post-header">
     <h1>{post.data.title}</h1>
+    <button id="toc-toggle" class="toc-toggle" aria-label="Показать содержание">☰</button>
   </header>
 
   <div class="post-layout">
@@ -31,6 +32,7 @@ const { Content } = await render(post);
         <ul id="toc-list"></ul>
       </nav>
     </aside>
+    <div class="toc-overlay" id="toc-overlay"></div>
   </div>
 
   <script type="module">
@@ -47,6 +49,23 @@ const { Content } = await render(post);
         link.textContent = heading.textContent;
         item.appendChild(link);
         tocList.appendChild(item);
+      });
+    }
+
+    // Toggle TOC on mobile
+    const tocToggle = document.getElementById('toc-toggle');
+    const tocAside = document.querySelector('.post-toc');
+    const tocOverlay = document.getElementById('toc-overlay');
+
+    if (tocToggle && tocAside && tocOverlay) {
+      tocToggle.addEventListener('click', () => {
+        tocAside.classList.toggle('active');
+        tocOverlay.classList.toggle('active');
+      });
+
+      tocOverlay.addEventListener('click', () => {
+        tocAside.classList.remove('active');
+        tocOverlay.classList.remove('active');
       });
     }
   </script>
