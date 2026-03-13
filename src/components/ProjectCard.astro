@@ -1,8 +1,14 @@
 ---
-const { title, slug } = Astro.props;
+const { title, slug, cover, description } = Astro.props;
 ---
 
-<article>
-  <h2>{title}</h2>
-  <a href={`/portfolio/${slug}`}>View project</a>
-</article>
+<a href={`${import.meta.env.BASE_URL}portfolio/${slug}/`} class="project-card">
+  <article class="card">
+    {cover && <img src={cover.src} alt={title} class="card-image" />}
+    <div class="card-overlay">
+      <h3 class="card-title">{title}</h3>
+      {description && <p class="card-description">{description}</p>}
+      <div class="card-arrow">→</div>
+    </div>
+  </article>
+</a>

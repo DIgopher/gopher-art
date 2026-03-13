@@ -4,7 +4,7 @@ date: 2024-05-12
 tags:
  - illustration
  - print
-cover: /images/forest.jpg
+description: "Poster created as part of my illustration series."
 ---
 
 This poster was created as part of my illustration series.
