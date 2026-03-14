@@ -24,6 +24,9 @@
   --h2: clamp(1.5rem, 2.66vw ,3rem);
   --h2-line-height: 1.33;
 
+  --h3: clamp(1.125rem, 2vw ,2.25rem);
+  --h3-line-height: 1.4;
+
   --subheader-size: clamp(0.875rem, 1.55vw ,1.75rem);
   --subheader-line-height: 1.286;
 
@@ -34,7 +37,10 @@
   --p-small-line-height: 1.33;
 
   --small-gap: clamp(0.5rem, 0.887vw ,1rem);
-  --medium-gap: clamp(2rem, 3.55vw ,4rem)
+  --medium-gap: clamp(2rem, 3.55vw ,4rem);
+
+  --p-post-size: clamp(1rem, 1.2vw ,1.125rem);
+  --p-post-line-height: 1.7;
 
 }
 
@@ -52,6 +58,7 @@ main {
 .h2 {
   font-size: var(--h2);
   line-height: var(--h2-line-height);
+  font-weight: 500;
 }
 
 .subheader {
@@ -219,40 +226,67 @@ main {
 
 /* Blog post layout */
 .post-header {
-  max-width: 900px;
-  margin: 2.25rem auto 1.25rem;
-  padding: 0 1.25rem;
+  max-width: var(--container);
+  margin: 10rem auto 4rem;
+  padding: 0 var(--gap);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .post-header h1 {
-  font-size: clamp(2rem, 3vw, 2.6rem);
-  line-height: 1.1;
-  margin: 0;
+  margin: 0 0 1rem;
+}
+
+.post-header .post-date {
+  margin: 0.25rem 0 0;
+  color: #555;
+  font-size: 0.95rem;
 }
 
 .post-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 2.5rem;
-  max-width: 1100px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--gap);
+  max-width: var(--container);
   margin: 0 auto;
-  padding: 0 1.25rem 2.5rem;
+  padding: 0 var(--gap);
 }
 
 .post-content {
-  min-width: 0;
+  grid-column: 2 / 5;
 }
 
 .post-content p {
-  max-width: 55ch;
-  line-height: 1.75;
-  margin: 1.2rem 0;
+  line-height: 1.7;
+  font-size: 18px;
+  margin: 0 0 24px;
+  font-weight: 400;
 }
 
-.post-content h2,
-.post-content h3,
-.post-content h4 {
-  margin: 2.2rem 0 1rem;
+.post-content h2 {
+  font-size: 36px;
+  line-height: 64px;
+  font-weight: 500;
+  margin: 64px 0 36px;
+}
+
+.post-content h3 {
+  font-size: 28px;
+  line-height: 1.4;
+  font-weight: 500;
+  margin: 48px 0 24px;
+}
+
+.post-content em {
+  font-style: italic;
+  
+}
+
+.post-content blockquote {
+  border-left: 4px solid rgba(0, 0, 0, 0.1);
+  padding-left: 1rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-style: italic;
 }
 
 .post-content pre {
@@ -263,20 +297,21 @@ main {
 }
 
 .post-toc {
+  grid-column: span 2;
   position: sticky;
   top: 120px;
   align-self: start;
-  padding: 1.5rem 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0.75rem;
+  padding: var(--gap);
+  border-left: 1px solid rgba(0, 0, 0, 0.6);
   background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   max-height: calc(100vh - 140px);
   overflow: auto;
 }
 
 .post-toc h2 {
-  font-size: 1.05rem;
+  font-size: 1.125rem;
+  color: #888;
+  font-weight: 400;
   margin: 0 0 0.75rem;
 }
 
@@ -290,17 +325,23 @@ main {
 
 .post-toc a {
   display: block;
-  padding: 0.35rem 0.5rem;
+  padding: 0.35rem 0;
   border-radius: 0.45rem;
-  font-size: 0.95rem;
+  font-size: 1.125rem;
   color: inherit;
-  transition: background 150ms ease;
+  transition: opacity 150ms ease;
 }
 
 .post-toc a:hover,
 .post-toc a:focus-visible {
-  background: rgba(0, 0, 0, 0.05);
+  opacity: 0.6;
 }
+
+.post-toc li.toc-item-h3 {
+  padding-left: 1rem;
+}
+
+
 
 /* Comic reader */
 .comic-header {
@@ -812,42 +853,33 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.25rem;
+  padding: 1.25rem 0;
   border-radius: var(--border-radius);
   background: #fff;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .blog-card:hover .blog-card__inner {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0.6;
 }
 
 .blog-card__date {
-  font-size: 0.85rem;
-  color: #777;
   display: block;
   margin-bottom: 0.5rem;
 }
 
 .blog-card__title {
-  font-size: 1.4rem;
   margin: 0 0 0.4rem;
-  line-height: 1.2;
 }
 
 .blog-card__description {
-  font-size: 1rem;
-  color: #444;
   margin: 0;
 }
 
 .blog-card__arrow {
   align-self: flex-end;
   font-size: 1.4rem;
-  color: #007acc;
+  color: var(--color-text);
   margin-top: 1rem;
   transition: transform 0.25s ease;
 }
@@ -973,41 +1005,9 @@ main {
   opacity: 1;
 }
 
-.post-toc {
-  position: sticky;
-  top: 120px;
-  align-self: start;
-  padding: 1.5rem 1.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-}
 
-.post-toc h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.25rem;
-}
 
-.post-toc ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
 
-.post-toc li {
-  margin: 0.5rem 0;
-}
-
-.post-toc a {
-  text-decoration: none;
-  color: var(--color-text);
-  transition: color 0.2s ease;
-}
-
-.post-toc a:hover {
-  color: #007acc;
-}
 
 @media (max-width: 768px) {
   .toc-toggle {
