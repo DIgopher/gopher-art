@@ -7,9 +7,12 @@ const projects = await getCollection("projects");
 ---
 
 <BaseLayout>
-  <h1>Portfolio</h1>
+  <section class="first-section">
+    <h1 class="h1 small-gap">Портфолио</h1>
+    <p class="subheader">Здесь собраны мои проекты в области дизайна, иллюстрации и анимации</p>
+  </section>
 
-  <div class="portfolio-grid">
+  <div class="portfolio-grid container">
     {projects.map(project => (
       <ProjectCard
         title={project.data.title}

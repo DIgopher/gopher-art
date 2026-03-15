@@ -36,6 +36,23 @@ function numericSort(a, b) {
   return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 }
 
+function formatChapterLabel(chapter) {
+  const normalized = chapter.replace(/[-_]/g, " ").trim();
+  const match = chapter.match(/^(?:chapter|глава)[-_ ]?(\d+)(?:[-_ ]?(.*))?$/i);
+  if (match) {
+    const num = Number(match[1]);
+    const rest = match[2] ? match[2].replace(/[-_]/g, " ").trim() : "";
+    return rest ? `Глава ${num}. ${rest}` : `Глава ${num}`;
+  }
+  const numMatch = chapter.match(/(\d+)/);
+  if (numMatch) {
+    const num = numMatch[1];
+    const text = normalized.replace(num, "").trim();
+    return text ? `Глава ${num}. ${text}` : `Глава ${num}`;
+  }
+  return normalized;
+}
+
 const rawFiles = await fs.readdir(chapterDir);
 const imageFiles = rawFiles
   .filter((file) => /\.(png|jpe?g|webp|gif)$/i.test(file))
@@ -52,6 +69,11 @@ const chapterNames = (
   .filter((f) => f.isDirectory())
   .map((f) => f.name)
   .sort(numericSort);
+
+const chapterLinks = chapterNames.map((name) => ({
+  name,
+  label: formatChapterLabel(name),
+}));
 ---
 
 <BaseLayout>
@@ -60,6 +82,7 @@ const chapterNames = (
       <h1>Комикс</h1>
       <p class="comic-header__subtitle">{comic.replace(/[-_]/g, " ")}</p>
     </div>
+    <button id="chapter-toc-toggle" class="chapter-toc-toggle" aria-label="Показать содержание">☰ Содержание</button>
     <div class="comic-controls">
       <div class="comic-controls__group">
         <label for="chapter-select" class="comic-label">Глава</label>
@@ -78,6 +101,19 @@ const chapterNames = (
       </div>
     </div>
   </header>
+
+  <aside id="chapter-toc" class="chapter-toc">
+    <h3>Содержание</h3>
+    <ul>
+      {chapterLinks.map((item) => (
+        <li>
+          <a href={`${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(item.name)}/`} class={item.name === chapter ? 'is-active' : ''}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </aside>
 
   <main class="comic-reader">
     <div id="scroll-container" class="comic-scroll" style="display: none;">
@@ -164,6 +200,21 @@ const chapterNames = (
 
     prevButton?.addEventListener("click", () => navigate(-1));
     nextButton?.addEventListener("click", () => navigate(1));
+
+    const tocToggle = document.getElementById("chapter-toc-toggle");
+    const chapterToc = document.getElementById("chapter-toc");
+
+    tocToggle?.addEventListener("click", () => {
+      chapterToc?.classList.toggle("active");
+    });
+
+    chapterToc?.querySelectorAll("nav a, ul a").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.matchMedia("(max-width: 1024px)").matches) {
+          chapterToc.classList.remove("active");
+        }
+      });
+    });
 
     updateUI();
   </script>

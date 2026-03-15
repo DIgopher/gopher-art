@@ -1,28 +1,137 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ComicChapterCard from "../../components/ComicChapterCard.astro";
 import { promises as fs } from "fs";
 import path from "path";
 
 const comicsRoot = path.join(process.cwd(), "public", "comics");
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 const comicDirs = await fs.readdir(comicsRoot, { withFileTypes: true });
+
+function numericSort(a, b) {
+  const numA = Number(a.replace(/\D/g, "")) || 0;
+  const numB = Number(b.replace(/\D/g, "")) || 0;
+  if (numA !== numB) return numA - numB;
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+}
+
+function formatChapterLabel(chapter) {
+  const normalized = chapter.replace(/[-_]/g, " ").trim();
+  const match = chapter.match(/^(?:chapter|глава)[-_ ]?(\d+)(?:[-_ ]?(.*))?$/i);
+  if (match) {
+    const num = Number(match[1]);
+    const rest = match[2] ? match[2].replace(/[-_]/g, " ").trim() : "";
+    return rest ? `Глава ${num}. ${rest}` : `Глава ${num}`;
+  }
+  const numMatch = chapter.match(/(\d+)/);
+  if (numMatch) {
+    const num = numMatch[1];
+    const text = normalized.replace(num, "").trim();
+    return text ? `Глава ${num}. ${text}` : `Глава ${num}`;
+  }
+  return normalized;
+}
+
+function parseFrontmatter(content) {
+  const match = content.match(/^---\s*([\s\S]*?)\s*---/m);
+  if (!match) return {};
+  const lines = match[1].split(/\r?\n/);
+  const result = {};
+  for (const line of lines) {
+    const m = line.match(/^\s*([\w-]+)\s*:\s*(.*)$/);
+    if (m) {
+      let val = m[2].trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      result[m[1]] = val;
+    }
+  }
+  return result;
+}
 
 const comics = [];
 for (const dir of comicDirs) {
   if (!dir.isDirectory()) continue;
   const comic = dir.name;
   const chapterDirs = await fs.readdir(path.join(comicsRoot, comic), { withFileTypes: true });
-  const chapters = chapterDirs
+
+  const chapters = [];
+  const chapterNames = chapterDirs
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
-  comics.push({ comic, chapters });
+    .sort(numericSort);
+
+  let comicLabel = comic.replace(/[-_]/g, " ");
+  let comicDescription = "";
+
+  try {
+    const comicFiles = await fs.readdir(path.join(comicsRoot, comic));
+    const comicMetaFile = ["meta.md", "comic.md", "index.md"].find((name) => comicFiles.includes(name));
+    if (comicMetaFile) {
+      const comicMetaContent = await fs.readFile(path.join(comicsRoot, comic, comicMetaFile), "utf-8");
+      const comicFront = parseFrontmatter(comicMetaContent);
+      if (comicFront.title) comicLabel = comicFront.title;
+      if (comicFront.description) comicDescription = comicFront.description;
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  for (const chapter of chapterNames) {
+    const chapterPath = path.join(comicsRoot, comic, chapter);
+    const rawFiles = await fs.readdir(chapterPath);
+    const imageFiles = rawFiles
+      .filter((file) => /\.(png|jpe?g|webp|gif)$/i.test(file))
+      .sort(numericSort);
+
+    const firstImage = imageFiles[0] || null;
+    let preview = firstImage
+      ? `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(firstImage)}`
+      : null;
+
+    let chapterLabel = formatChapterLabel(chapter);
+    let description = "";
+
+    try {
+      const metaFileName = ["meta.md", "chapter.md", "index.md"].find(name => rawFiles.includes(name));
+      if (metaFileName) {
+        const metaContent = await fs.readFile(path.join(chapterPath, metaFileName), "utf-8");
+        const frontmatter = parseFrontmatter(metaContent);
+        if (frontmatter.title) chapterLabel = frontmatter.title;
+        if (frontmatter.description) description = frontmatter.description;
+
+        if (frontmatter.preview) {
+          const previewCandidate = frontmatter.preview.trim();
+          if (/^https?:\/\//i.test(previewCandidate)) {
+            preview = previewCandidate;
+          } else if (previewCandidate.startsWith("/")) {
+            preview = `${baseUrl}${previewCandidate}`;
+          } else {
+            preview = `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(previewCandidate)}`;
+          }
+        }
+      }
+    } catch (e) {
+      // ignore invalid or missing metadata
+    }
+
+    chapters.push({
+      name: chapter,
+      label: chapterLabel,
+      description,
+      preview,
+    });
+  }
+
+  comics.push({ comic, label: comicLabel, description: comicDescription, chapters });
 }
 ---
 
 <BaseLayout>
-  <header class="comic-header">
-    <h1>Комиксы</h1>
-    <p class="comic-header__subtitle">Выберите комикс и главу для чтения</p>
+  <header class="first-section">
+    <h1 class="h1 small-gap">Комиксы</h1>
+    <p class="subheader">Выберите комикс и главу для чтения</p>
   </header>
 
   <section class="comic-index">
@@ -30,19 +139,24 @@ for (const dir of comicDirs) {
       <p>Нет доступных комиксов. Добавьте папки в <code>public/comics</code>.</p>
     ) : (
       <div class="comic-list">
-        {comics.map(({ comic, chapters }) => (
+        {comics.map(({ comic, label, description, chapters }) => (
           <article class="comic-card" key={comic}>
-            <h2>{comic.replace(/[-_]/g, " ")}</h2>
-            <p class="comic-card__hint">Выберите главу:</p>
-            <ul class="comic-card__chapters">
+            <h2 class="h1 small-gap">{label}</h2>
+            {description && <p class="subheader gap">{description}</p>}
+            
+            <div class="comic-chapters">
               {chapters.map((chapter) => (
-                <li key={chapter}>
-                  <a href={`${import.meta.env.BASE_URL}comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/`}>
-                    {chapter.replace(/[-_]/g, " ")}
-                  </a>
-                </li>
+                <ComicChapterCard
+                  key={chapter.name}
+                  comic={comic}
+                  chapter={chapter.name}
+                  label={chapter.label}
+                  description={chapter.description}
+                  preview={chapter.preview}
+                  baseUrl={baseUrl}
+                />
               ))}
-            </ul>
+            </div>
           </article>
         ))}
       </div>

@@ -1,0 +1,20 @@
+---
+const { comic, chapter, label, description, preview, baseUrl } = Astro.props;
+const chapterUrl = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/`;
+---
+
+<article class="comic-chapter-preview">
+  <a class="comic-chapter-preview__imageLink" href={chapterUrl} aria-label={label}>
+    {preview ? (
+      <img src={preview} alt={`Превью ${label}`} loading="lazy" />
+    ) : (
+      <div class="comic-chapter-preview__empty">Нет превью</div>
+    )}
+  </a>
+  <div class="comic-chapter-preview__info">
+    <p class="h3-post small-gap text-center">
+      {label}
+    </p>
+    {description && <p class="p-post text-center">{description}</p>}
+  </div>
+</article>
