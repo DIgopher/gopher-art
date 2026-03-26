@@ -70,6 +70,13 @@ main {
   font-weight: 500;
 }
 
+.h3 {
+  font-size: var(--h3);
+  line-height: var(--h3-line-height);
+  font-weight: 500;
+}
+
+
 .subheader {
   font-size: var(--subheader-size);
   line-height: var(--subheader-line-height);
@@ -80,6 +87,13 @@ main {
   font-size: var(--p-size);
   line-height: var(--p-line-height);
   color: var(--color-text);
+  font-weight: 400;
+}
+
+.p--small {
+  font-size: var(--p-small-size);
+  line-height: var(--p-small-line-height);
+  font-weight: 400;
 }
 
 .p-post {
@@ -97,20 +111,38 @@ main {
 .text-center {
   text-align: center;
 }
-
+/* rename */
 .small-gap {
   margin-bottom: var(--small-gap);
 }
 
+/* remane */
 .gap {
   margin-bottom: var(--gap);
 }
+
 
 .container {
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 var(--gap);
 }
+
+.container--block {
+  max-width: var(--container);
+  margin: var(--block-gap) auto;
+  padding: 0 var(--gap);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--gap);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--gap);  
+}
+
 
 /* ---------------- */
 /* Navbar */
@@ -128,6 +160,8 @@ main {
   gap: var(--gap);
 
   top: -4rem;
+  left: 0;
+  right: 0;
 }
 
 .navbar-wrapper {
@@ -399,9 +433,6 @@ main {
 .comic-list {
   display: grid;
   gap: 1.5rem;
-  padding: 1rem;
-  max-width: var(--container);
-  padding: 0 var(--gap);
 }
 
 .comic-card {
@@ -916,15 +947,10 @@ main {
 }
 
 .project-info {
-  max-width: var(--container-4cols);
-  margin: var(--block-gap) auto;
   font-size: var(--p-size);
   line-height: var(--p-line-height);
   color: var(--color-text);
   line-height: 1.6;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  padding: 0 var(--gap);
 }
 
 /* Footer Adjustments */
@@ -1013,9 +1039,9 @@ main {
   position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 2rem;
   transition: transform 0.3s ease;
+  background-color: #888;
 }
 
 .card:hover {
@@ -1026,8 +1052,10 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.3s ease;
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
+
+
 
 .card-overlay {
   position: absolute;
@@ -1035,43 +1063,57 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  
+  
+  /* Do i need it */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: start;
+  
   opacity: 0;
-  transition: opacity 0.3s ease;
-  padding: 1rem;
-  text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding: var(--h2);
+
+  transform: scale(0.95);
 }
 
 .card:hover .card-overlay {
   opacity: 1;
+  transform: scale(1);
 }
 
 .card:hover .card-image {
-  filter: blur(2px) brightness(0.5);
+  filter: blur(20px) brightness(0.2);
+  transform: scale(1.1);
 }
+
 
 .card-title {
   color: white;
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--small-gap) 0;
+
 }
 
 .card-description {
   color: white;
-  font-size: 1rem;
   margin: 0 0 1rem 0;
 }
 
 .card-arrow {
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  color: white;
+  bottom: var(--h2);
+  right: var(--h2);
+  background-color: white;
   font-size: 2rem;
+  padding: 1rem;
+  border-radius: 100%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.card:hover .card-arrow {
+  transform: scale(1);
 }
 
 /* ---------------- */
@@ -1180,6 +1222,7 @@ main {
 .first-section {
     padding: 4rem var(--gap);
     margin: var(--block-gap) auto;
+    max-width: var(--container);
 }
 
 @media (max-width: 860px) {
