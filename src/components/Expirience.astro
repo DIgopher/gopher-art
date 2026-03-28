@@ -1,0 +1,13 @@
+---
+const { time, place, details} = Astro.props;
+
+---
+
+<div class="about-time">
+          <p class="p--small grey about-time__left text-right">{time}</p>
+          <div class="about-time__right">
+            <p class="p--small grey small-gap">{place}</p>
+            <p class="p ">{details}</p>
+            
+          </div>
+      </div>

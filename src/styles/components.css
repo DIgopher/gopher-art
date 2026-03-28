@@ -96,6 +96,10 @@ main {
   font-weight: 400;
 }
 
+.grey {
+  color: var(--color-grey);
+}
+
 .p-post {
   font-size: var(--p-post-size);
   line-height: var(--p-post-line-height);
@@ -111,16 +115,29 @@ main {
 .text-center {
   text-align: center;
 }
-/* rename */
+
+.text-right {
+  text-align: right;
+}
+
+/* GAPS */
+
 .small-gap {
   margin-bottom: var(--small-gap);
 }
 
-/* remane */
 .gap {
   margin-bottom: var(--gap);
 }
 
+/* ROUNDNESS */
+
+.border-radius {
+  border-radius: var(--border-radius);
+}
+
+
+/* CONTAINER */
 
 .container {
   max-width: var(--container);
@@ -653,6 +670,8 @@ main {
 
 .comic-controls {
   display: flex;
+  position: fixed;
+  bottom: 0;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
@@ -724,6 +743,11 @@ main {
   display: block;
 }
 
+#comic-page-img {
+  height: 90vh;
+  width: auto;
+}
+
 .comic-page figcaption {
   padding: 0.75rem 1rem;
   font-size: 0.9rem;
@@ -738,6 +762,9 @@ main {
 
 .comic-pager {
   display: flex;
+  position: fixed;
+  bottom: 5rem;
+  left: 2rem;
   align-items: center;
   justify-content: center;
   gap: 1rem;
@@ -770,6 +797,8 @@ main {
   display: grid;
   place-items: center;
 }
+
+
 
 @media (max-width: 860px) {
   .comic-controls {
@@ -1252,6 +1281,7 @@ main {
   padding: 0 var(--medium-gap);
 }
 
+
 /* ---------------- */
 /* Blog TOC Mobile */
 /* ---------------- */
@@ -1328,4 +1358,23 @@ main {
   .toc-overlay {
     display: block;
   }
+}
+
+.about-time {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.about-time__left {
+  grid-column: span 1;
+}
+
+.about-time__right {
+  grid-column: span 3;
+}
+
+.about-header {
+  grid-column: 3 / 6;
 }

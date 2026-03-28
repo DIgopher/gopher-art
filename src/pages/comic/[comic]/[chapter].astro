@@ -83,23 +83,7 @@ const chapterLinks = chapterNames.map((name) => ({
       <p class="comic-header__subtitle">{comic.replace(/[-_]/g, " ")}</p>
     </div>
     <button id="chapter-toc-toggle" class="chapter-toc-toggle" aria-label="Показать содержание">☰ Содержание</button>
-    <div class="comic-controls">
-      <div class="comic-controls__group">
-        <label for="chapter-select" class="comic-label">Глава</label>
-        <select id="chapter-select" class="comic-select">
-          {chapterNames.map((name) => (
-            <option selected={name === chapter} value={name}>
-              {name.replace(/[-_]/g, " ")}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div class="comic-controls__group comic-controls__modes">
-        <span class="comic-label">Режим</span>
-        <button type="button" class="comic-mode-btn" data-mode="infinite">Бесконечная</button>
-        <button type="button" class="comic-mode-btn" data-mode="paged">Постраничная</button>
-      </div>
-    </div>
+    
   </header>
 
   <aside id="chapter-toc" class="chapter-toc">
@@ -124,17 +108,36 @@ const chapterLinks = chapterNames.map((name) => ({
         </figure>
       ))}
     </div>
-
     <div id="paged-container" class="comic-paged" style="display: none;">
       <div class="comic-pager">
         <button type="button" id="prev-page" class="comic-pager__nav">← Назад</button>
         <span id="page-label" class="comic-pager__label">1 / {images.length}</span>
         <button type="button" id="next-page" class="comic-pager__nav">Вперед →</button>
       </div>
-      <div class="comic-page-frame">
+      <div class="comic-page-frame" >
         <img id="comic-page-img" src={images[0]} alt="Загрузка..." />
-      </div>
+      </div> 
     </div>
+    
+    <div class="comic-controls">
+      <!-- <div class="comic-controls__group">
+        <label for="chapter-select" class="comic-label">Глава</label>
+        <select id="chapter-select" class="comic-select">
+          {chapterNames.map((name) => (
+            <option selected={name === chapter} value={name}>
+              {name.replace(/[-_]/g, " ")}
+            </option>
+          ))}
+        </select>
+      </div> -->
+      <div class="comic-controls__group comic-controls__modes">
+        <span class="comic-label">Режим</span>
+        <button type="button" class="comic-mode-btn" data-mode="infinite">Бесконечная</button>
+        <button type="button" class="comic-mode-btn" data-mode="paged">Постраничная</button>
+      </div>
+      
+    </div>
+    
   </main>
 
   <script define:vars={{ comic, images, baseUrl }}>
