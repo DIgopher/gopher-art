@@ -882,6 +882,18 @@ main {
   padding: 0 var(--gap);
 }
 
+.project-two-cols--images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--small-gap);
+  width: 100%;
+}
+
+.col--images {
+  display: flex;
+  flex-direction: column;
+  gap: var(--small-gap);
+}
 
 .col {
   display: flex;
@@ -913,7 +925,13 @@ main {
     order: var(--mobile-order, 0);
   }
 
+
+
   .project-image {
+    order: var(--mobile-order, 0);
+  }
+
+  .project-two-cols--images {
     order: var(--mobile-order, 0);
   }
 

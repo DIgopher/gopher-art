@@ -1,0 +1,91 @@
+---
+title: "Брендинг для студенческого комитета биологического факультета МГУ"
+date: 2021-09-01
+tags: ["Брендинг", "Проект"]
+cover: "./snippet.webp"
+description: "Мой первый опыт в дизайне"
+---
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+import ProjectColumnImages from '../../../components/project/ProjectColumnImages.astro';
+import ProjectVideo from '../../../components/project/ProjectVideo.astro';
+
+import hero from "./hero_1x.webp"
+import fig1 from "./colors_1x.webp"
+import fig2 from "./snippet.webp"
+import fig3 from "./pic01_1x.webp"
+import fig4 from "./pic02_1x.webp"
+import fig5 from "./pic03_1x.webp"
+import fig6 from "./pic04_1x.webp"
+import fig7 from "./pic05_1x.webp"
+import fig8 from "./pic06_1x.webp"
+import fig9 from "./elements.webp"
+import fig10 from "./pic07_1x.webp"
+import fig11 from "./pic08_1x.webp"
+import fig12 from "./pic09_1x.webp"
+import video from "./SK-post.mp4"
+
+
+<ProjectHero src={hero} alt="EV secretion and uptake illustration" />
+
+<ProjectHeader 
+  title="Оформление группы ВК и объявлений для студенческого комитета биологического факультета МГУ"
+  category="Проект"
+  type="Брендинг"
+  year="2021"
+>
+  <p>Это был мой первый проект. Меня позвали, чтобы придумать логотип для студенческого комитета биофака на замену фотографии, которая стояла на тот момент на обложке группы.</p>
+  <p>После дизайна логотипа я занялась оформлением постов в группе и объявлений, размещаемых в общежитии.</p>
+</ProjectHeader>
+
+<ProjectLayout>
+    <ProjectText mobileOrder="1" slot="right" variant="large">
+      В логотипе я использовала элементы из логотипа биологического факультета, чтобы создать с ним связь.
+    </ProjectText>
+
+    <ProjectImage mobileOrder="2" slot="right" src={fig2} alt="Логотип СК БФ" />
+
+    <ProjectImage mobileOrder="3" slot="left" src={fig1} alt="Цветовая палитра" />
+    
+    <ProjectText mobileOrder="4" slot="left" variant="captioned" caption="Цветовая палитра">
+        Я подобрала основную цветовую палитру, но для тематических постов я использовала и другие палитры. Одни были привязаны к важности поста, другие — к тематике комнаты или мероприятия. Для объединения постов с разной палитрой я использовала элементы: ДНК и листья.
+    </ProjectText>
+
+    <ProjectColumnImages mobileOrder="5" slot="left" >
+        <ProjectImage src={fig3} slot="left" alt="Объеявление об открытии камеры хранения" />
+        <ProjectImage src={fig4} slot="left"  />
+        <ProjectImage src={fig5} slot="left" />
+        <ProjectImage src={fig6} slot="right" />
+        <ProjectImage src={fig7} slot="right" />
+        <ProjectImage src={fig8} slot="right" />
+    </ProjectColumnImages>
+
+    <ProjectImage mobileOrder="6" slot="right" src={fig9} alt="элементы" />
+
+    <ProjectText mobileOrder="7" slot="right" variant="captioned" caption="Элементы">
+        Едиными для постов и объявлений элементами были ДНК и листья. Они тоже пересекаются с тем, что отражено на логотипе биофака: РНК и лист. Вместе они соединяют лабораторную и полевую тематики биофака, отделяя объявления студенческого комитета факультета от других объявлений в общежитии.
+    </ProjectText>
+
+    <ProjectColumnImages mobileOrder="8" slot="right">
+        <ProjectImage src={fig11} slot="left"  />
+        <ProjectImage src={fig10} slot="right"  />
+        <ProjectImage src={fig12} slot="right" />
+</ProjectColumnImages>
+    
+
+  <ProjectVideo mobileOrder="9" slot="left" src={video} title="Анимация серии постов" />
+
+  <ProjectText mobileOrder="10" slot="left" variant="normal" >
+    Моей любимой работой в рамках этого проекта стала идея для серии постов о поселении — когда с каждой следующей волной поселения всё больше и больше комнат заселены и в них начинает гореть свет.
+  </ProjectText>
+</ProjectLayout>
+
+<ProjectInfo>
+  <p>Работа над иллюстрациями велась в Figma.</p>
+  <a href="https://vk.com/studkombio" style="text-decoration: underline; color: #111;">Ссылка на группу ВК</a>
+</ProjectInfo>

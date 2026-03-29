@@ -1,0 +1,14 @@
+---
+
+const { mobileOrder } = Astro.props;
+---
+
+<section class="project-two-cols--images" style={`--mobile-order:${mobileOrder}`}>
+  <div class="col--images">
+    <slot name="left" />
+  </div>
+
+  <div class="col--images">
+    <slot name="right" />
+  </div>
+</section>

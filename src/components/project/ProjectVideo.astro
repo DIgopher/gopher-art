@@ -1,0 +1,20 @@
+---
+interface Props {
+  src: string;
+  poster?: string;
+  mobileOrder?: number | string;
+}
+
+const { src, poster, mobileOrder } = Astro.props;
+---
+
+<video
+  class="project-image project-video"
+  src={src}
+  poster={poster}
+  style={`--mobile-order:${mobileOrder}`}
+  autoplay
+  loop
+  muted
+  playsinline
+/>
