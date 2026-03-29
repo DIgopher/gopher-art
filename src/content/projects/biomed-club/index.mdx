@@ -1,0 +1,108 @@
+---
+title: "Дизайн для биомедицинского клуба Сеченовского университета"
+date: 2023-09-01
+tags: ["Брендинг", "Проект"]
+cover: "./snippet.webp"
+description: "Разработка дизайн-системы для оформления постов в группе ВК и печатных материалов для мероприятий биомедицинского клуба Сеченовского университета"
+---
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+import ProjectColumnImages from '../../../components/project/ProjectColumnImages.astro';
+import ProjectVideo from '../../../components/project/ProjectVideo.astro';
+
+import hero from "./hero_1x.webp"
+import colors from "./colors_1x.webp"
+import logo from "./snippet.webp"
+import alt_logo from "./pic_alt_emblem_1x.webp"
+import elements from "./elements_1x.webp"
+import fig1 from "./pic_presen1_1x.webp"
+import fig2 from "./pic_presen2_1x.webp"
+import fig3 from "./pic_presen3_1x.webp"
+import fig4 from "./pic_presen4_1x.webp"
+import fig5 from "./pic_post1_1x.webp"
+import fig6 from "./pic_post2_1x.webp"
+import bucklet1 from "./pic_bucklet1_1x.webp"
+import bucklet2 from "./pic_bucklet2_1x.webp"
+import poster from "./pic_poster_1x.webp"
+import photo1 from "./pic_photo1_1x.webp"
+import photo2 from "./pic_photo2_1x.webp"
+import sticker from "./pic_sticker_1x.webp"
+
+ 
+
+<ProjectHero src={hero} alt="Логотип биомедицинского клуба" />
+
+<ProjectHeader 
+  title="Дизайн для биомедицинского клуба Сеченовского университета"
+  category="Проект"
+  type="Брендинг"
+  year="2023"
+>
+  <p>Когда я начала работать в Сеченовском университете, меня позвали заняться дизайном для биомедицинского клуба. На тот момент у клуба была группа в вк. Целью клуба было — привлечь школьников и студентов заниматься наукой в Институте регенеративной медицины.</p>
+  <p>В процессе работы над проектом я создала дизайн-систему для оформления постов в группе и печатных материалов для мероприятий. Основной целью было сделать дизайн отличным от дизайна других клубов Сеченовского университета — которые в основном направлены на медицину, а не науку.</p>
+</ProjectHeader>
+
+<ProjectLayout>
+    <ProjectImage mobileOrder="1" slot="left" src={alt_logo} alt="Альтернативный логотип" />
+    <ProjectText mobileOrder="2" slot="right" variant="large">
+      Для того, чтобы обозначить сочетание науки и медицины, я соединила сосуд Гигеи (чаши со змеёй, символа медицины) и ДНК
+    </ProjectText>
+
+    <ProjectImage mobileOrder="3" slot="right" src={logo} alt="Логотип биомедицинского клуба" />
+
+    <ProjectText mobileOrder="4" slot="left" variant="captioned" caption="Логотип">
+        В первом варианте логотип был подробный, но затем было решено его упростить. Идея с сосудом в виде ДНК осталась, но стала минималистичной.
+    </ProjectText>
+
+    <ProjectImage mobileOrder="5" slot="left" src={colors} alt="Цветовая палитра" />
+    
+    <ProjectText mobileOrder="5" slot="left" variant="captioned" caption="Цветовая палитра">
+        Цветовая палитра сочетает розовый цвет с комплиментарным синим цветом. Розовый цвет здесь выбран не случайно. Когда растят клетки, они находятся в питательной среде розового оттенка. Так цвета в палитре позволяли и в элементах напоминать о биологии и науке.
+    </ProjectText>
+
+    <ProjectImage mobileOrder="6" slot="right" src={elements} alt="элементы" />
+
+    <ProjectText mobileOrder="7" slot="right" variant="captioned" caption="Элементы">
+        Был создан набор элементов в виде пипетки, чашки Петри, планшета и пробирок. Они активно используются в исследованиях, а в дизайне могут использоваться и как разделители, и как элементы на фоне, чтобы создавать дополнительную связь с наукой.
+    </ProjectText>
+
+    <ProjectColumnImages mobileOrder="8" slot="left" >
+        <ProjectImage src={fig1} slot="left" />
+        <ProjectImage src={fig2} slot="left"  />
+        <ProjectImage src={fig3} slot="left" />
+        <ProjectImage src={fig4} slot="right" />
+        <ProjectImage src={fig5} slot="right" />
+        <ProjectImage src={fig6} slot="right" />
+    </ProjectColumnImages>
+
+    <ProjectImage mobileOrder="9" slot="left" src={bucklet1} alt="буклет1" />
+
+    <ProjectText mobileOrder="10" slot="left" variant="normal" >
+    В процессе работы я делала как посты для группы, так и оформила презентацию, постер и буклет для воркшопов клуба. Для этого я отрисовала в едином стиле элементы в Procreate: отдельные клетки, ткани, различные пробирки и схемы работы методов.
+   </ProjectText>
+
+    <ProjectImage mobileOrder="11" slot="left" src={bucklet2} alt="буклет2" />
+
+    <ProjectImage mobileOrder="12" slot="right" src={poster} alt="постер" />
+
+    <ProjectColumnImages mobileOrder="13" slot="left" >
+        <ProjectImage src={photo1} slot="left" />
+        <ProjectImage src={photo2} slot="right" />
+    </ProjectColumnImages>
+
+    <ProjectImage mobileOrder="14" slot="right" src={sticker} alt="стикер" />
+
+  <ProjectText mobileOrder="15" slot="right" variant="normal" >
+    Моей любимой работой в рамках этого проекта стала идея для серии постов о поселении — когда с каждой следующей волной поселения всё больше и больше комнат заселены и в них начинает гореть свет.
+  </ProjectText>
+</ProjectLayout>
+
+<ProjectInfo>
+  <p>Работа над проектом велась в Figma и Procreate.</p>
+  <a href="https://vk.com/biomedclub" style="text-decoration: underline; color: #111;">Ссылка на группу ВК</a>
+</ProjectInfo>

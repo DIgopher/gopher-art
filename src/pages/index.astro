@@ -2,9 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
+import { sortCollectionByDateDesc } from "../utils/sortCollectionByDateDesc";
 
 
-const projects = await getCollection("projects");
+const projects = sortCollectionByDateDesc(await getCollection("projects"));
 ---
 
 <BaseLayout>

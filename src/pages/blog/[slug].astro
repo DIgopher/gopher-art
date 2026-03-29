@@ -44,7 +44,12 @@ const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDate
   </div>
 
   <script type="module">
+    const tocToggle = document.getElementById('toc-toggle');
+    const tocAside = document.querySelector('.post-toc');
+    const tocOverlay = document.getElementById('toc-overlay');
     const tocList = document.getElementById('toc-list');
+    const headingLinks = new Map();
+
     if (tocList) {
       const headings = Array.from(document.querySelectorAll('.post-content h2, .post-content h3'));
       headings.forEach((heading) => {
@@ -56,21 +61,77 @@ const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDate
         const link = document.createElement('a');
         link.href = `#${heading.id}`;
         link.textContent = heading.textContent;
+        headingLinks.set(heading.id, link);
         link.addEventListener('click', () => {
           if (window.matchMedia('(max-width: 1024px)').matches) {
-            tocAside.classList.remove('active');
-            tocOverlay.classList.remove('active');
+            tocAside?.classList.remove('active');
+            tocOverlay?.classList.remove('active');
           }
         });
         item.appendChild(link);
         tocList.appendChild(item);
       });
-    }
 
-    // Toggle TOC on mobile
-    const tocToggle = document.getElementById('toc-toggle');
-    const tocAside = document.querySelector('.post-toc');
-    const tocOverlay = document.getElementById('toc-overlay');
+      const setActiveHeading = (id) => {
+        headingLinks.forEach((link, headingId) => {
+          const isActive = headingId === id;
+          link.classList.toggle('is-active', isActive);
+          if (isActive) {
+            link.setAttribute('aria-current', 'true');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      if (headings.length > 0) {
+        let activeHeadingId = headings[0].id;
+        const visibleHeadings = new Set();
+
+        const pickActiveHeading = () => {
+          const firstVisibleHeading = headings.find((heading) =>
+            visibleHeadings.has(heading.id),
+          );
+
+          if (firstVisibleHeading) {
+            activeHeadingId = firstVisibleHeading.id;
+            setActiveHeading(activeHeadingId);
+            return;
+          }
+
+          const scrollAnchor = window.innerHeight * 0.25;
+          const closestHeading = [...headings]
+            .reverse()
+            .find((heading) => heading.getBoundingClientRect().top <= scrollAnchor);
+
+          activeHeadingId = closestHeading?.id ?? headings[0].id;
+          setActiveHeading(activeHeadingId);
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                visibleHeadings.add(entry.target.id);
+              } else {
+                visibleHeadings.delete(entry.target.id);
+              }
+            });
+
+            pickActiveHeading();
+          },
+          {
+            rootMargin: '-20% 0px -55% 0px',
+            threshold: [0, 1],
+          },
+        );
+
+        headings.forEach((heading) => observer.observe(heading));
+        window.addEventListener('scroll', pickActiveHeading, { passive: true });
+        window.addEventListener('hashchange', pickActiveHeading);
+        pickActiveHeading();
+      }
+    }
 
     if (tocToggle && tocAside && tocOverlay) {
       tocToggle.addEventListener('click', () => {

@@ -386,10 +386,15 @@ main {
 }
 
 .post-content blockquote {
-  border-left: 4px solid rgba(0, 0, 0, 0.1);
-  padding-left: 1rem;
-  color: rgba(0, 0, 0, 0.7);
-  font-style: italic;
+  padding: var(--gap);
+  font-weight: 500;
+  background-color: #F3F3F3;
+  border-radius: var(--border-radius);
+  margin: var(--gap) 0;
+}
+
+.post-content blockquote p {
+  margin: 0;
 }
 
 .post-content pre {
@@ -404,8 +409,6 @@ main {
   position: sticky;
   top: 120px;
   align-self: start;
-  padding: var(--gap);
-  border-left: 1px solid rgba(0, 0, 0, 0.6);
   background: rgba(255, 255, 255, 0.92);
   max-height: calc(100vh - 140px);
   overflow: auto;
@@ -413,9 +416,11 @@ main {
 
 .post-toc h2 {
   font-size: var(--p-post-size);
-  color: #888;
+  color: #000;
   font-weight: 400;
   margin: 0 0 0.75rem;
+  padding-left: var(--gap);
+  font-weight: 500;
 }
 
 .post-toc ul {
@@ -423,25 +428,35 @@ main {
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 0.35rem;
 }
 
 .post-toc a {
   display: block;
-  padding: 0.35rem 0;
-  border-radius: 0.45rem;
+  padding: 0.35rem 0 0.35rem var(--gap);
   font-size: var(--p-post-size);
-  color: inherit;
-  transition: opacity 150ms ease;
+  font-weight: 400;
+  color: #666;
+  text-decoration: none;
+  transition: opacity 150ms ease, color 150ms ease, background-color 150ms ease;
+  border-left: 2px solid #ccc;
 }
 
 .post-toc a:hover,
 .post-toc a:focus-visible {
-  opacity: 0.6;
+  border-left: 2px solid #000;
+  color: #000;
 }
 
-.post-toc li.toc-item-h3 {
-  padding-left: 1rem;
+.post-toc a.is-active,
+.post-toc a[aria-current="true"] {
+  opacity: 1;
+  color: #111;
+  font-weight: 500;
+  border-left: 2px solid #333;
+}
+
+li.toc-item-h3 a {
+  padding-left: calc(var(--gap) + 1rem);
 }
 
 
