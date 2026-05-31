@@ -3,6 +3,8 @@ import "../styles/global.css";
 import "../styles/components.css";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+
+const { extraNav = "none" } = Astro.props;
 ---
 
 <html lang="en">
@@ -12,7 +14,9 @@ import Footer from "../components/Footer.astro";
     <title>My Astro Site</title>
   </head>
   <body>
-    <Navbar />
+    <Navbar variant={extraNav}>
+      <slot name="navbarControls" />
+    </Navbar>
     <main>
       <slot />
     </main>

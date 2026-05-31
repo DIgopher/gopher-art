@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 // 1. Получаем базовый путь из конфига (например, "/my-repo/")
-const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ""); 
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export async function getStaticPaths() {
   // ... ваш существующий код getStaticPaths остается без изменений ...
@@ -59,8 +59,9 @@ const imageFiles = rawFiles
   .sort(numericSort);
 
 // 2. Добавляем baseUrl к путям картинок, чтобы они открывались на GitHub Pages
-const images = imageFiles.map((file) =>
-  `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(file)}`
+const images = imageFiles.map(
+  (file) =>
+    `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(file)}`,
 );
 
 const chapterNames = (
@@ -76,96 +77,118 @@ const chapterLinks = chapterNames.map((name) => ({
 }));
 ---
 
-<BaseLayout>
+<BaseLayout extraNav="block">
+  <div slot="navbarControls">
+    <button
+      id="chapter-toc-toggle"
+      class="chapter-toc-toggle"
+      aria-label="Показать содержание">☰ Сод</button
+    >
+  </div>
+
   <header class="comic-header">
     <div class="comic-header__title">
       <h1>Комикс</h1>
       <p class="comic-header__subtitle">{comic.replace(/[-_]/g, " ")}</p>
     </div>
-    <button id="chapter-toc-toggle" class="chapter-toc-toggle" aria-label="Показать содержание">☰ Содержание</button>
-    
   </header>
 
   <aside id="chapter-toc" class="chapter-toc">
     <h3>Содержание</h3>
+    <button class="chapter-toc-toggle" aria-label="Cкрыть содержание"
+      >☰ Сод</button
+    >
     <ul>
-      {chapterLinks.map((item) => (
-        <li>
-          <a href={`${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(item.name)}/`} class={item.name === chapter ? 'is-active' : ''}>
-            {item.label}
-          </a>
-        </li>
-      ))}
+      {
+        chapterLinks.map((item) => (
+          <li>
+            <a
+              href={`${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(item.name)}/`}
+              class={item.name === chapter ? "is-active" : ""}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
+    <div class="comic-controls__group comic-controls__modes">
+      <span class="comic-label">Режим</span>
+      <button type="button" class="comic-mode-btn" data-mode="infinite"
+        >Бесконечная</button
+      >
+      <button type="button" class="comic-mode-btn" data-mode="paged"
+        >Постраничная</button
+      >
+    </div>
   </aside>
 
   <main class="comic-reader">
     <div id="scroll-container" class="comic-scroll" style="display: none;">
-      {images.map((src, index) => (
-        <figure class="comic-page">
-          <img src={src} alt={`Страница ${index + 1}`} loading="lazy" />
-          <figcaption>Страница {index + 1}</figcaption>
-        </figure>
-      ))}
+      {
+        images.map((src, index) => (
+          <figure class="comic-page">
+            <img src={src} alt={`Страница ${index + 1}`} loading="lazy" />
+            <figcaption>Страница {index + 1}</figcaption>
+          </figure>
+        ))
+      }
     </div>
-    <div id="paged-container" class="comic-paged" style="display: none;">
-      <div class="comic-pager">
-        <button type="button" id="prev-page" class="comic-pager__nav">← Назад</button>
-        <span id="page-label" class="comic-pager__label">1 / {images.length}</span>
-        <button type="button" id="next-page" class="comic-pager__nav">Вперед →</button>
+    <div class="comic-paged">
+      <div class="comic-pager" id="paged-container">
+        <button
+          type="button"
+          id="prev-page"
+          class="comic-pager__nav"
+          style="display: none;">← Назад</button
+        >
+        <span id="page-indicator" class="comic-label">1 / {images.length}</span>
+        <button
+          type="button"
+          id="next-page"
+          class="comic-pager__nav"
+          style="display: none;">Вперед →</button
+        >
       </div>
-      <div class="comic-page-frame" >
+      <div class="comic-page-frame">
         <img id="comic-page-img" src={images[0]} alt="Загрузка..." />
-      </div> 
-    </div>
-    
-    <div class="comic-controls">
-      <!-- <div class="comic-controls__group">
-        <label for="chapter-select" class="comic-label">Глава</label>
-        <select id="chapter-select" class="comic-select">
-          {chapterNames.map((name) => (
-            <option selected={name === chapter} value={name}>
-              {name.replace(/[-_]/g, " ")}
-            </option>
-          ))}
-        </select>
-      </div> -->
-      <div class="comic-controls__group comic-controls__modes">
-        <span class="comic-label">Режим</span>
-        <button type="button" class="comic-mode-btn" data-mode="infinite">Бесконечная</button>
-        <button type="button" class="comic-mode-btn" data-mode="paged">Постраничная</button>
       </div>
-      
     </div>
-    
   </main>
 
   <script define:vars={{ comic, images, baseUrl }}>
-    const chapterSelect = document.getElementById("chapter-select");
     const modeButtons = document.querySelectorAll(".comic-mode-btn");
     const scrollContainer = document.getElementById("scroll-container");
     const pagedContainer = document.getElementById("paged-container");
+    const pageControls = document.querySelectorAll(".comic-pager__nav");
     const prevButton = document.getElementById("prev-page");
     const nextButton = document.getElementById("next-page");
     const pageImg = document.getElementById("comic-page-img");
-    const pageLabel = document.getElementById("page-label");
+    const pageIndicator = document.getElementById("page-indicator");
 
     let url = new URL(window.location.href);
     let currentMode = url.searchParams.get("mode") || "infinite";
-    let currentPage = Math.max(0, parseInt(url.searchParams.get("page") || "0"));
+    let currentPage = Math.max(
+      0,
+      parseInt(url.searchParams.get("page") || "0"),
+    );
+    let currentScrollPage = 1;
 
     function updateUI() {
-      scrollContainer.style.display = currentMode === "infinite" ? "block" : "none";
-      pagedContainer.style.display = currentMode === "paged" ? "block" : "none";
+      scrollContainer.style.display =
+        currentMode === "infinite" ? "block" : "none";
+      pageControls.forEach((pager) => {
+        pager.style.display = currentMode === "paged" ? "block" : "none";
+      });
 
-      modeButtons.forEach(btn => {
+      modeButtons.forEach((btn) => {
         btn.classList.toggle("is-active", btn.dataset.mode === currentMode);
       });
 
       if (currentMode === "paged") {
         if (currentPage >= images.length) currentPage = images.length - 1;
         pageImg.src = images[currentPage];
-        pageLabel.textContent = `${currentPage + 1} / ${images.length}`;
+        pageIndicator.textContent = `${currentPage + 1} / ${images.length}`;
         prevButton.disabled = currentPage <= 0;
         nextButton.disabled = currentPage >= images.length - 1;
       }
@@ -177,38 +200,87 @@ const chapterLinks = chapterNames.map((name) => ({
       window.history.replaceState({}, "", newUrl);
     }
 
-    chapterSelect?.addEventListener("change", (e) => {
-      const newChapter = e.target.value;
-      
-      // 4. Используем baseUrl для формирования корректного пути к новой главе
-      // Путь теперь будет /repo-name/comics/comic-name/chapter-name
-      const nextPath = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(newChapter)}/`;
-      const nextUrl = new URL(nextPath, window.location.origin);
-      
-      nextUrl.searchParams.set("mode", currentMode);
-      window.location.href = nextUrl.toString();
-    });
+    // Intersection Observer для отслеживания видимых страниц при бесконечной прокрутке
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
 
-    modeButtons.forEach(btn => {
+    let visiblePages = new Set();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const pageIndex = parseInt(entry.target.dataset.pageIndex);
+        if (entry.isIntersecting) {
+          visiblePages.add(pageIndex);
+        } else {
+          visiblePages.delete(pageIndex);
+        }
+      });
+
+      if (visiblePages.size > 0) {
+        const minPage = Math.min(...visiblePages);
+        currentScrollPage = minPage + 1;
+        pageIndicator.textContent = `${currentScrollPage} / ${images.length}`;
+      }
+    }, observerOptions);
+
+    modeButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        currentMode = btn.dataset.mode;
+        const newMode = btn.dataset.mode;
+
+        // Синхронизируем текущую страницу при переключении режимов
+        if (currentMode === "infinite" && newMode === "paged") {
+          // Переходим из infinite в paged - устанавливаем страницу на основе scrollPage
+          currentPage = currentScrollPage - 1;
+        } else if (currentMode === "paged" && newMode === "infinite") {
+          // Переходим из paged в infinite - обновляем scrollPage на основе currentPage
+          currentScrollPage = currentPage + 1;
+        }
+
+        currentMode = newMode;
         updateUI();
+
+        // Если переключились на бесконечную прокрутку, скроллим к текущей странице
+        if (newMode === "infinite") {
+          // Используем setTimeout для того, чтобы DOM обновился до скролла
+          setTimeout(() => {
+            scrollToPage(currentPage);
+          }, 100);
+        }
       });
     });
 
     const navigate = (step) => {
-      currentPage = Math.max(0, Math.min(images.length - 1, currentPage + step));
+      currentPage = Math.max(
+        0,
+        Math.min(images.length - 1, currentPage + step),
+      );
       updateUI();
+    };
+
+    const scrollToPage = (pageIndex) => {
+      const comicPages = scrollContainer?.querySelectorAll(".comic-page");
+      if (comicPages && comicPages[pageIndex]) {
+        comicPages[pageIndex].scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     };
 
     prevButton?.addEventListener("click", () => navigate(-1));
     nextButton?.addEventListener("click", () => navigate(1));
 
     const tocToggle = document.getElementById("chapter-toc-toggle");
+    const tocToggles = document.querySelectorAll(".chapter-toc-toggle");
     const chapterToc = document.getElementById("chapter-toc");
 
-    tocToggle?.addEventListener("click", () => {
-      chapterToc?.classList.toggle("active");
+    tocToggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        chapterToc.classList.toggle("active");
+      });
     });
 
     chapterToc?.querySelectorAll("nav a, ul a").forEach((link) => {
@@ -219,6 +291,20 @@ const chapterLinks = chapterNames.map((name) => ({
       });
     });
 
+    // Добавляем data-attribute к каждому комиксу для отслеживания
+    const comicPages = scrollContainer?.querySelectorAll(".comic-page");
+    comicPages?.forEach((page, index) => {
+      page.dataset.pageIndex = index;
+      observer.observe(page);
+    });
+
     updateUI();
+
+    // При загрузке в режиме infinite, если есть page в URL, скроллим к этой странице
+    if (currentMode === "infinite" && url.searchParams.has("page")) {
+      setTimeout(() => {
+        scrollToPage(currentPage);
+      }, 100);
+    }
   </script>
 </BaseLayout>
