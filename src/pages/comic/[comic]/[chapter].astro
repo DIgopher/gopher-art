@@ -77,14 +77,14 @@ const chapterLinks = chapterNames.map((name) => ({
 }));
 ---
 
-<BaseLayout extraNav="block">
-  <div slot="navbarControls">
-    <button
-      id="chapter-toc-toggle"
-      class="chapter-toc-toggle"
-      aria-label="Показать содержание">☰ Сод</button
-    >
-  </div>
+<BaseLayout extraNav="flex">
+  <button
+    slot="navbarControls"
+    id="chapter-toc-toggle"
+    class="chapter-toc-toggle"
+    aria-label="Показать содержание"
+    ><img src={`${import.meta.env.BASE_URL}settings-list.svg`} alt="" /></button
+  >
 
   <header class="comic-header">
     <div class="comic-header__title">
@@ -94,10 +94,12 @@ const chapterLinks = chapterNames.map((name) => ({
   </header>
 
   <aside id="chapter-toc" class="chapter-toc">
-    <h3>Содержание</h3>
-    <button class="chapter-toc-toggle" aria-label="Cкрыть содержание"
-      >☰ Сод</button
-    >
+    <div class="chapter-toc__header">
+      <h3>Содержание</h3>
+      <button class="chapter-toc-toggle" aria-label="Cкрыть содержание"
+        ><img src={`${import.meta.env.BASE_URL}cancel.svg`} alt="" /></button
+      >
+    </div>
     <ul>
       {
         chapterLinks.map((item) => (
@@ -112,14 +114,16 @@ const chapterLinks = chapterNames.map((name) => ({
         ))
       }
     </ul>
-    <div class="comic-controls__group comic-controls__modes">
-      <span class="comic-label">Режим</span>
-      <button type="button" class="comic-mode-btn" data-mode="infinite"
-        >Бесконечная</button
-      >
-      <button type="button" class="comic-mode-btn" data-mode="paged"
-        >Постраничная</button
-      >
+    <div class="comic-controls__modes">
+      <span class="comic-label">Режим просмотра</span>
+      <div class="comic-controls__modes__btns">
+        <button type="button" class="comic-mode-btn" data-mode="infinite"
+          >Бесконечная</button
+        >
+        <button type="button" class="comic-mode-btn" data-mode="paged"
+          >Постраничная</button
+        >
+      </div>
     </div>
   </aside>
 

@@ -11,7 +11,12 @@ const { extraNav = "none" } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Astro Site</title>
+    <title>Абстрактный суслик</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href={`${import.meta.env.BASE_URL}flavicon.png`}
+    />
   </head>
   <body>
     <Navbar variant={extraNav}>
