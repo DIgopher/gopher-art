@@ -1,0 +1,204 @@
+
+/* ---------------- */
+/* Navbar */
+/* ---------------- */
+
+.navbar {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gap);
+  max-width: var(--container);
+  position: fixed;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--gap);
+
+  top: -4rem;
+  left: 0;
+  right: 0;
+}
+
+.navbar-wrapper {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-background);
+  padding: 4.75rem var(--gap) 0.75rem;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  width: var(--nav-width);
+  transform: translateX(var(--transform-nav));
+}
+
+
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__logo img {
+  height: 2.2rem;
+  width: auto;
+  display: block;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar__item {
+  list-style: none;
+}
+
+.navbar__item--extra {
+  height: auto;
+}
+
+.navbar__wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap);
+}
+
+.navbar__link {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.35rem;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center; 
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Создаем верхний слой прямо в CSS */
+.navbar__link::before {
+  /* Берем текст из атрибута HTML */
+  content: attr(data-text); 
+  position: absolute;
+  inset: 0px; /* Растягиваем на всю кнопку (заменяет top, left, right, bottom: 0) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Цвета для hover-эффекта */
+  color: #ffffff; 
+  background-color: #000; 
+  
+  /* Прячем в центр */
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Анимация при наведении */
+.navbar__link:hover::before {
+  clip-path: circle(80% at 50% 50%);
+}
+
+
+
+/* ---------------- */
+/* Mobile menu toggle */
+/* ---------------- */
+
+.navbar__toggle {
+  display: none;
+}
+
+.navbar__burger {
+  display: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__burger span {
+  display: block;
+  height: 2px;
+  width: 1.5rem;
+  background: currentColor;
+  border-radius: 99px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.navbar__burger span:nth-child(1) {
+  top: 0.6rem;
+}
+
+.navbar__burger span:nth-child(2) {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.navbar__burger span:nth-child(3) {
+  bottom: 0.6rem;
+}
+
+@media (max-width: 860px) {
+  .navbar__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(320px, 80vw);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4.25rem 1.5rem 2rem;
+    gap: 1.1rem;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 1px 0 20px rgba(0, 0, 0, 0.12);
+    transform: translateX(-110%);
+    transition: transform 220ms ease;
+  }
+
+  .navbar__toggle:checked ~ .navbar__menu {
+    transform: translateX(0);
+  }
+
+  .navbar__burger {
+    display: flex;
+  }
+
+  .navbar__toggle:checked + .navbar__burger span:nth-child(1) {
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .navbar__toggle:checked + .navbar__burger span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar__toggle:checked + .navbar__burger span:nth-child(3) {
+    transform: translateX(-50%) rotate(-45deg);
+  }
+
+  /* Blog post layout on small screens */
+  .post-layout {
+    display: block;
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+

@@ -1,0 +1,25 @@
+
+.text-title {
+  grid-column: span 3;
+}
+
+.title-header {
+  font-size: var(--title);
+  line-height: var(--title-line-height);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.title-subheader {
+    font-size: var(--h2);
+    line-height: var(--h2-line-height);
+    color: var(--color-grey);
+}
+
+.hero-image {
+  grid-column: span 3;
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  padding: 0 var(--medium-gap);
+}

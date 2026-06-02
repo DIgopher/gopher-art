@@ -4,7 +4,6 @@ import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 import { sortCollectionByDateDesc } from "../utils/sortCollectionByDateDesc";
 
-
 const projects = sortCollectionByDateDesc(await getCollection("projects"));
 ---
 
@@ -12,24 +11,28 @@ const projects = sortCollectionByDateDesc(await getCollection("projects"));
   <section class="hero-section">
     <div class="text-title">
       <h1 class="title-header small-gap">Абстрактный суслик</h1>
-      <p class="subheader">Ольга Смирнова</p>
+      <p class="title-subheader">Ольга Смирнова</p>
     </div>
-    <img class="hero-image" src={`${import.meta.env.BASE_URL}logo-title.svg`} alt="Logo" />
+    <img
+      class="hero-image"
+      src={`${import.meta.env.BASE_URL}logo-title.svg`}
+      alt="Logo"
+    />
   </section>
-  
-
 
   <section class="portfolio-section">
     <h2 class="h1 cards-block__header">Проекты</h2>
     <div class="portfolio-grid">
-      {projects.map(project => (
-        <ProjectCard
-          title={project.data.title}
-          slug={project.id}
-          cover={project.data.cover}
-          description={project.data.description}
-        />
-      ))}
+      {
+        projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            slug={project.id}
+            cover={project.data.cover}
+            description={project.data.description}
+          />
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
