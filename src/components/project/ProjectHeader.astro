@@ -7,21 +7,21 @@ interface Props {
   year?: string;
 }
 
-const { 
-  category = "Проект", 
-  title, 
+const {
+  category = "Проект",
+  title,
   subtitle,
-  type = "Научная иллюстрация", 
-  year 
+  type = "Научная иллюстрация",
+  year,
 } = Astro.props;
 ---
 
-<header class="project-header">
+<header class="project-header grid">
   <div class="cols4">
     <div class="project-header__category">{category}</div>
     <h1 class="project-header__title">{title}</h1>
     {subtitle && <h2 class="project-header__subtitle">{subtitle}</h2>}
-    
+
     <div class="project-header__meta">
       {type && <span class="project-meta-item">{type}</span>}
       {year && <span class="project-meta-item">{year}</span>}

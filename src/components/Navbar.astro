@@ -2,7 +2,7 @@
 const { variant = "none" } = Astro.props;
 ---
 
-<nav class="navbar">
+<nav class="navbar grid">
   <div class="navbar-wrapper cols4">
     <div class="navbar-container">
       <a class="navbar__logo" href={`${import.meta.env.BASE_URL}`}>
@@ -25,8 +25,25 @@ const { variant = "none" } = Astro.props;
           <span></span>
           <span></span>
         </label>
-
         <ul class="navbar__menu">
+          <li class="navbar__item mobile-only">
+            <label
+              class="chapter-toc-toggle"
+              for="navbar-toggle"
+              aria-label="Закрыть меню"
+              ><img
+                src={`${import.meta.env.BASE_URL}cancel.svg`}
+                alt=""
+              /></label
+            >
+          </li>
+          <li class="navbar__item mobile-only">
+            <a
+              class="navbar__link"
+              href={`${import.meta.env.BASE_URL}`}
+              data-text="Главная">Главная</a
+            >
+          </li>
           <li class="navbar__item">
             <a
               class="navbar__link"

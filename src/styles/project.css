@@ -118,17 +118,14 @@
 
 .project-header {
   max-width: var(--container);
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+
   margin: var(--block-gap) auto;
   text-align: left;
   padding: 0 var(--gap);
-  gap: var(--gap);
+
 }
 
-.cols4 {
-  grid-column: 2 / 6;
-}
+
 
 .project-header__category {
   font-size: var(--subheader-size);
@@ -225,9 +222,6 @@
     order: var(--mobile-order, 0);
   }
 
-  .cols4 {
-  grid-column: 1 / 7;
-  }
 
   .footer__content {
     flex-direction: column;

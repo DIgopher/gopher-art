@@ -9,9 +9,7 @@
   max-width: var(--container);
   margin: 0 auto;
   padding: var(--block-gap) var(--gap);
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--gap);
+  
   
 }
 

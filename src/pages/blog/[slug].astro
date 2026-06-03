@@ -5,69 +5,111 @@ import { getCollection, render } from "astro:content";
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
 
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post }
+    props: { post },
   }));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+const formattedPostDate = post.data.date
+  ? new Date(post.data.date).toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+  : "";
 ---
 
-<BaseLayout>
-  <header class="post-header">
+<BaseLayout extraNav="flex">
+  <button
+    slot="navbarControls"
+    id="toc-toggle"
+    class="toc-toggle"
+    aria-label="Показать содержание"
+  >
+    <img
+      style="width: 28px; height: 28px;"
+      src={`${import.meta.env.BASE_URL}blog.svg`}
+      alt="Blog content button"
+    />
+  </button>
+  <header class="post-header grid">
     <div class="cols4">
       <div>
         <h1 class="h1">{post.data.title}</h1>
         {formattedPostDate && <p class="subheader">{formattedPostDate}</p>}
       </div>
-      <button id="toc-toggle" class="toc-toggle" aria-label="Показать содержание">
-        <img style="width: 36px; height: 36px;" src={`${import.meta.env.BASE_URL}blog.svg`} alt="Blog content button" />
-      </button>
     </div>
   </header>
 
-  <div class="post-layout">
+  <div class="post-layout grid">
     <article class="post-content">
       <Content />
     </article>
 
     <aside class="post-toc" aria-label="Содержание поста">
-      <h2>Содержание</h2>
+      <div class="chapter-toc__header">
+        <h3>Содержание</h3>
+        <button
+          class="chapter-toc-toggle toc-toggle"
+          aria-label="Cкрыть содержание"
+          ><img src={`${import.meta.env.BASE_URL}cancel.svg`} alt="" /></button
+        >
+      </div>
       <nav>
         <ul id="toc-list"></ul>
       </nav>
     </aside>
-    <div class="toc-overlay" id="toc-overlay"></div>
+    <div class="blur-overlay" id="toc-overlay"></div>
   </div>
 
   <script type="module">
-    const tocToggle = document.getElementById('toc-toggle');
-    const tocAside = document.querySelector('.post-toc');
-    const tocOverlay = document.getElementById('toc-overlay');
-    const tocList = document.getElementById('toc-list');
+    const tocToggle = document.querySelectorAll(".toc-toggle");
+    const tocAside = document.querySelector(".post-toc");
+    const tocOverlay = document.getElementById("toc-overlay");
+    const tocList = document.getElementById("toc-list");
     const headingLinks = new Map();
 
     if (tocList) {
-      const headings = Array.from(document.querySelectorAll('.post-content h2, .post-content h3'));
+      const headings = Array.from(
+        document.querySelectorAll(".post-content h2, .post-content h3"),
+      );
       headings.forEach((heading) => {
-        if (!heading.id) {
-          heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-_]/g, '');
+        // 1. Очищаем текст заголовка от подписи (тега <em>)
+        const clone = heading.cloneNode(true); // Клонируем, чтобы не сломать реальный DOM
+        const subtitle = clone.querySelector("em");
+        if (subtitle) {
+          subtitle.remove(); // Удаляем подпись из клона
         }
-        const item = document.createElement('li');
+        const cleanTitle = clone.textContent.trim(); // Получаем чистый текст
+
+        // 2. Генерация ID (с поддержкой кириллицы, если в блоге есть русский язык)
+        if (!heading.id) {
+          heading.id = cleanTitle
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^a-z0-9-_а-яё]/gi, "");
+        }
+
+        // 3. Создаем элементы оглавления
+        const item = document.createElement("li");
         item.classList.add(`toc-item-${heading.tagName.toLowerCase()}`);
-        const link = document.createElement('a');
+
+        const link = document.createElement("a");
         link.href = `#${heading.id}`;
-        link.textContent = heading.textContent;
+        link.textContent = cleanTitle; // <-- Используем очищенный текст без подписи
+
         headingLinks.set(heading.id, link);
-        link.addEventListener('click', () => {
-          if (window.matchMedia('(max-width: 1024px)').matches) {
-            tocAside?.classList.remove('active');
-            tocOverlay?.classList.remove('active');
+
+        link.addEventListener("click", () => {
+          if (window.matchMedia("(max-width: 1024px)").matches) {
+            tocAside?.classList.remove("active");
+            tocOverlay?.classList.remove("active");
           }
         });
+
         item.appendChild(link);
         tocList.appendChild(item);
       });
@@ -75,11 +117,11 @@ const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDate
       const setActiveHeading = (id) => {
         headingLinks.forEach((link, headingId) => {
           const isActive = headingId === id;
-          link.classList.toggle('is-active', isActive);
+          link.classList.toggle("is-active", isActive);
           if (isActive) {
-            link.setAttribute('aria-current', 'true');
+            link.setAttribute("aria-current", "true");
           } else {
-            link.removeAttribute('aria-current');
+            link.removeAttribute("aria-current");
           }
         });
       };
@@ -102,7 +144,9 @@ const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDate
           const scrollAnchor = window.innerHeight * 0.25;
           const closestHeading = [...headings]
             .reverse()
-            .find((heading) => heading.getBoundingClientRect().top <= scrollAnchor);
+            .find(
+              (heading) => heading.getBoundingClientRect().top <= scrollAnchor,
+            );
 
           activeHeadingId = closestHeading?.id ?? headings[0].id;
           setActiveHeading(activeHeadingId);
@@ -121,28 +165,34 @@ const formattedPostDate = post.data.date ? new Date(post.data.date).toLocaleDate
             pickActiveHeading();
           },
           {
-            rootMargin: '-20% 0px -55% 0px',
+            rootMargin: "-20% 0px -55% 0px",
             threshold: [0, 1],
           },
         );
 
         headings.forEach((heading) => observer.observe(heading));
-        window.addEventListener('scroll', pickActiveHeading, { passive: true });
-        window.addEventListener('hashchange', pickActiveHeading);
+        window.addEventListener("scroll", pickActiveHeading, { passive: true });
+        window.addEventListener("hashchange", pickActiveHeading);
         pickActiveHeading();
       }
     }
+    tocToggle.forEach((toggle) =>
+      toggle.addEventListener("click", () => {
+        tocAside.classList.toggle("active");
+        tocOverlay.classList.toggle("active");
+      }),
+    );
+    // if (tocToggle && tocAside && tocOverlay) {
 
-    if (tocToggle && tocAside && tocOverlay) {
-      tocToggle.addEventListener('click', () => {
-        tocAside.classList.toggle('active');
-        tocOverlay.classList.toggle('active');
-      });
+    //   tocToggle.addEventListener("click", () => {
+    //     tocAside.classList.toggle("active");
+    //     tocOverlay.classList.toggle("active");
+    //   });
 
-      tocOverlay.addEventListener('click', () => {
-        tocAside.classList.remove('active');
-        tocOverlay.classList.remove('active');
-      });
-    }
+    //   tocOverlay.addEventListener("click", () => {
+    //     tocAside.classList.remove("active");
+    //     tocOverlay.classList.remove("active");
+    //   });
+    // }
   </script>
 </BaseLayout>

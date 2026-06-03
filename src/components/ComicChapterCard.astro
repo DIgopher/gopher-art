@@ -4,17 +4,23 @@ const chapterUrl = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURICom
 ---
 
 <article class="comic-chapter-preview">
-  <a class="comic-chapter-preview__imageLink" href={chapterUrl} aria-label={label}>
-    {preview ? (
-      <img src={preview} alt={`Превью ${label}`} loading="lazy" />
-    ) : (
-      <div class="comic-chapter-preview__empty">Нет превью</div>
-    )}
+  <a
+    class="comic-chapter-preview__imageLink small-gap"
+    href={chapterUrl}
+    aria-label={label}
+  >
+    {
+      preview ? (
+        <img src={preview} alt={`Превью ${label}`} loading="lazy" />
+      ) : (
+        <div class="comic-chapter-preview__empty">Нет превью</div>
+      )
+    }
   </a>
   <div class="comic-chapter-preview__info">
-    <p class="h3-post small-gap text-center">
+    <p class="h3 small-gap text-center">
       {label}
     </p>
-    {description && <p class="p-post text-center">{description}</p>}
+    {description && <p class="p--small text-center">{description}</p>}
   </div>
 </article>

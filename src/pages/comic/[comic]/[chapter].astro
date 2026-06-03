@@ -2,20 +2,21 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { promises as fs } from "fs";
 import path from "path";
+import matter from "gray-matter"; // Импортируем парсер для фронтметтера
 
-// 1. Получаем базовый путь из конфига (например, "/my-repo/")
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export async function getStaticPaths() {
-  // ... ваш существующий код getStaticPaths остается без изменений ...
   const comicsRoot = path.join(process.cwd(), "public", "comics");
   const comicDirs = await fs.readdir(comicsRoot, { withFileTypes: true });
   const paths = [];
+
   for (const comicDir of comicDirs) {
     if (!comicDir.isDirectory()) continue;
     const comic = comicDir.name;
     const chaptersRoot = path.join(comicsRoot, comic);
     const chapterDirs = await fs.readdir(chaptersRoot, { withFileTypes: true });
+
     for (const chapterDir of chapterDirs) {
       if (!chapterDir.isDirectory()) continue;
       const chapter = chapterDir.name;
@@ -28,53 +29,80 @@ export async function getStaticPaths() {
 const { comic, chapter } = Astro.params;
 const comicsRoot = path.join(process.cwd(), "public", "comics");
 const chapterDir = path.join(comicsRoot, comic, chapter);
+const comicDir = path.join(comicsRoot, comic);
 
-function numericSort(a, b) {
-  const numA = Number(a.replace(/\D/g, "")) || 0;
-  const numB = Number(b.replace(/\D/g, "")) || 0;
-  if (numA !== numB) return numA - numB;
-  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+// 1. Читаем файл с описанием главы (предположим, он называется description.md)
+// Если файл называется иначе (например, info.txt или meta.md), замените имя ниже
+const metaFilePath = path.join(chapterDir, "meta.md");
+let chapterMeta = { title: chapter, description: "", preview: "" };
+
+try {
+  const metaContent = await fs.readFile(metaFilePath, "utf-8");
+  const { data } = matter(metaContent); // Извлекаем данные из --- ---
+  chapterMeta = { ...chapterMeta, ...data };
+} catch (e) {
+  console.warn(
+    `Не найден файл описания в ${chapterDir}, используем имя папки.`,
+  );
 }
 
-function formatChapterLabel(chapter) {
-  const normalized = chapter.replace(/[-_]/g, " ").trim();
-  const match = chapter.match(/^(?:chapter|глава)[-_ ]?(\d+)(?:[-_ ]?(.*))?$/i);
-  if (match) {
-    const num = Number(match[1]);
-    const rest = match[2] ? match[2].replace(/[-_]/g, " ").trim() : "";
-    return rest ? `Глава ${num}. ${rest}` : `Глава ${num}`;
-  }
-  const numMatch = chapter.match(/(\d+)/);
-  if (numMatch) {
-    const num = numMatch[1];
-    const text = normalized.replace(num, "").trim();
-    return text ? `Глава ${num}. ${text}` : `Глава ${num}`;
-  }
-  return normalized;
+// 1. Читаем файл с описанием комикса
+
+const comicMetaFilePath = path.join(comicDir, "meta.md");
+let comicMeta = { title: comic, description: "" };
+
+try {
+  const comicMetaContent = await fs.readFile(comicMetaFilePath, "utf-8");
+  const { data } = matter(comicMetaContent); // Извлекаем данные из --- ---
+  comicMeta = { ...comicMeta, ...data };
+} catch (e) {
+  console.warn(`Не найден файл описания в ${comicDir}, используем имя папки.`);
 }
 
+// 2. Получаем только файлы картинок.
+// Так как нумерация '01, 02...', стандартного метода .sort() теперь абсолютно достаточно!
 const rawFiles = await fs.readdir(chapterDir);
 const imageFiles = rawFiles
   .filter((file) => /\.(png|jpe?g|webp|gif)$/i.test(file))
-  .sort(numericSort);
+  .sort();
 
-// 2. Добавляем baseUrl к путям картинок, чтобы они открывались на GitHub Pages
+// 3. Формируем ссылки на картинки
 const images = imageFiles.map(
   (file) =>
     `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(file)}`,
 );
 
-const chapterNames = (
+// 4. Получаем список всех глав комикса для навигации
+const chapterDirs = (
   await fs.readdir(path.join(comicsRoot, comic), { withFileTypes: true })
 )
   .filter((f) => f.isDirectory())
   .map((f) => f.name)
-  .sort(numericSort);
+  .sort(); // Здесь тоже достаточно стандартной сортировки
 
-const chapterLinks = chapterNames.map((name) => ({
-  name,
-  label: formatChapterLabel(name),
-}));
+// 5. Собираем ссылки на главы.
+// Для красивого названия (label) теперь можно использовать данные из мета-файла каждой главы
+const chapterLinks = await Promise.all(
+  chapterDirs.map(async (name) => {
+    const currentChapterMetaPath = path.join(
+      comicsRoot,
+      comic,
+      name,
+      "meta.md",
+    );
+    let label = name; // Фолбэк на имя папки
+
+    try {
+      const content = await fs.readFile(currentChapterMetaPath, "utf-8");
+      const { data } = matter(content);
+      if (data.title) label = data.title;
+    } catch (e) {
+      // Файла нет, оставляем имя папки
+    }
+
+    return { name, label };
+  }),
+);
 ---
 
 <BaseLayout extraNav="flex">
@@ -88,8 +116,10 @@ const chapterLinks = chapterNames.map((name) => ({
 
   <header class="comic-header">
     <div class="comic-header__title">
-      <h1>Комикс</h1>
-      <p class="comic-header__subtitle">{comic.replace(/[-_]/g, " ")}</p>
+      <h1 class="h1 small-gap text-center">{comicMeta.title}</h1>
+      <p class="comic-header__subtitle subheader text-center">
+        {chapterMeta.title}
+      </p>
     </div>
   </header>
 
@@ -140,7 +170,6 @@ const chapterLinks = chapterNames.map((name) => ({
         images.map((src, index) => (
           <figure class="comic-page">
             <img src={src} alt={`Страница ${index + 1}`} loading="lazy" />
-            <figcaption>Страница {index + 1}</figcaption>
           </figure>
         ))
       }
@@ -160,9 +189,6 @@ const chapterLinks = chapterNames.map((name) => ({
           class="comic-pager__nav"
           style="display: none;">Вперед →</button
         >
-      </div>
-      <div class="comic-page-frame">
-        <img id="comic-page-img" src={images[0]} alt="Загрузка..." />
       </div>
     </div>
   </main>
@@ -290,7 +316,7 @@ const chapterLinks = chapterNames.map((name) => ({
     tocToggles.forEach((toggle) => {
       toggle.addEventListener("click", () => {
         chapterToc.classList.toggle("active");
-        blurOverlay.classList.toggle("is-active");
+        blurOverlay.classList.toggle("active");
         // Включаем или выключаем блокировку скролла страницы
         document.body.classList.toggle("no-scroll");
       });
@@ -298,7 +324,7 @@ const chapterLinks = chapterNames.map((name) => ({
 
     blurOverlay.addEventListener("click", () => {
       chapterToc.classList.toggle("active");
-      blurOverlay.classList.toggle("is-active");
+      blurOverlay.classList.toggle("active");
       // Включаем или выключаем блокировку скролла страницы
       document.body.classList.toggle("no-scroll");
     });
@@ -307,7 +333,7 @@ const chapterLinks = chapterNames.map((name) => ({
       link.addEventListener("click", () => {
         if (window.matchMedia("(max-width: 1024px)").matches) {
           chapterToc.classList.remove("active");
-          blurOverlay.classList.toggle("is-active");
+          blurOverlay.classList.toggle("active");
           // Включаем или выключаем блокировку скролла страницы
           document.body.classList.toggle("no-scroll");
         }
