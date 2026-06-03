@@ -109,7 +109,7 @@ const chapterLinks = await Promise.all(
   <button
     slot="navbarControls"
     id="chapter-toc-toggle"
-    class="chapter-toc-toggle"
+    class="chapter-toc-toggle js-chapter-toc-toggle"
     aria-label="Показать содержание"
     ><img src={`${import.meta.env.BASE_URL}settings-list.svg`} alt="" /></button
   >
@@ -128,7 +128,9 @@ const chapterLinks = await Promise.all(
   <aside id="chapter-toc" class="chapter-toc">
     <div class="chapter-toc__header">
       <h3>Содержание</h3>
-      <button class="chapter-toc-toggle" aria-label="Cкрыть содержание"
+      <button
+        class="chapter-toc-toggle js-chapter-toc-toggle"
+        aria-label="Cкрыть содержание"
         ><img src={`${import.meta.env.BASE_URL}cancel.svg`} alt="" /></button
       >
     </div>
@@ -309,7 +311,7 @@ const chapterLinks = await Promise.all(
     prevButton?.addEventListener("click", () => navigate(-1));
     nextButton?.addEventListener("click", () => navigate(1));
 
-    const tocToggles = document.querySelectorAll(".chapter-toc-toggle");
+    const tocToggles = document.querySelectorAll(".js-chapter-toc-toggle");
     const chapterToc = document.getElementById("chapter-toc");
     const blurOverlay = document.getElementById("overlay");
 

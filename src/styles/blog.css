@@ -293,6 +293,7 @@ li.toc-item-h3 a {
    display: flex;
    flex-direction: column;
    justify-content: flex-start;
+   max-height: 100vh;
   }
 
 .post-toc a {
