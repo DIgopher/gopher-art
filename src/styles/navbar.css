@@ -95,8 +95,8 @@
   align-items: center;
   
   /* Цвета для hover-эффекта */
-  color: #ffffff; 
-  background-color: #000; 
+  color: var(--color-background); 
+  background-color: var(--color-text); 
   
   /* Прячем в центр */
   clip-path: circle(0% at 50% 50%);
@@ -107,6 +107,10 @@
 /* Анимация при наведении */
 .navbar__link:hover::before {
   clip-path: circle(80% at 50% 50%);
+}
+
+.navbar__link:active {
+  transform: scale(0.98);
 }
 
 

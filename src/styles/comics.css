@@ -183,7 +183,7 @@
   margin: 0 auto;
   padding: 1.25rem 1.25rem 1rem;
   display: grid;
-  backdrop-filter: blur(10px);
+
 }
 
 
@@ -375,6 +375,12 @@
 .blur-overlay.active {
   opacity: 1;
   visibility: visible;
+}
+
+@media (min-width: 1024px) {
+.post-layout .blur-overlay {
+  display: none;
+}
 }
 
 /* Этот класс мы будем добавлять к тегу body с помощью JavaScript */

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProjectCard from "../../components/ProjectCard.astro";
+import ProjectCardWide from "../../components/ProjectCardWide.astro";
 import { getCollection } from "astro:content";
 import { sortCollectionByDateDesc } from "../../utils/sortCollectionByDateDesc";
 
@@ -9,18 +9,24 @@ const projects = sortCollectionByDateDesc(await getCollection("projects"));
 
 <BaseLayout>
   <section class="first-section">
-    <h1 class="h1 small-gap">Портфолио</h1>
-    <p class="subheader">Здесь собраны мои проекты в области дизайна, иллюстрации и анимации</p>
+    <h1 class="h1 small-gap text-center">Портфолио</h1>
+    <p class="subheader text-center">
+      Здесь собраны мои проекты в области дизайна, иллюстрации и анимации
+    </p>
   </section>
 
-  <div class="portfolio-grid container">
-    {projects.map(project => (
-      <ProjectCard
-        title={project.data.title}
-        slug={project.id}
-        cover={project.data.cover}
-        description={project.data.description}
-      />
-    ))}
+  <div class="grid container">
+    <div class="portfolio-full">
+      {
+        projects.map((project) => (
+          <ProjectCardWide
+            title={project.data.title}
+            slug={project.id}
+            cover={project.data.cover}
+            description={project.data.description}
+          />
+        ))
+      }
+    </div>
   </div>
 </BaseLayout>

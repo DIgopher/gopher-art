@@ -5,6 +5,8 @@
   --color-background: #fff;
   --color-text: #111;
   --color-grey: #666;
+  --color-main-text:#1c1c1c;
+  --color-light-grey:#888;
 
   --container-nav: 77rem;
 
@@ -33,13 +35,13 @@
   --p-size: clamp(1rem, 1.77vw ,2rem);
   --p-line-height: 1.3125;
 
-  --p-small-size: clamp(0.75rem, 1.33vw ,1.5rem);
+  --p-small-size: clamp(1rem, 1.33vw ,1.5rem);
   --p-small-line-height: 1.33;
 
   --small-gap: clamp(0.5rem, 0.887vw ,1rem);
   --medium-gap: clamp(2rem, 3.55vw ,4rem);
 
-  --p-post-size: clamp(1rem, 1.1vw ,1.25rem);
+  --p-post-size: clamp(1.125rem, 1.1vw ,1.25rem);
   --p-post-line-height: 1.7;
 
   --h2-post-size: clamp(1.5rem, 1.99vw ,2.25rem);
@@ -55,6 +57,17 @@
 
 main {
   margin-top: 4rem;
+}
+
+/* ---------------- */
+/* FONTS */
+/* ---------------- */
+
+.uppercase {
+  text-transform: uppercase;
+}
+.weight-400 {
+  font-weight: 400;
 }
 
 .h1 {
@@ -118,7 +131,7 @@ main {
   font-size: 0.8em; /* Делает текст меньше относительно заголовка */
   font-weight: 400; /* Убирает жирность */
   font-style: normal; /* Убирает сам наклон курсива, если он тебе не нужен */
-  color: #6b7280; /* Делает цвет приглушенным (серым) */
+  color: var(--color-grey); /* Делает цвет приглушенным (серым) */
   margin-top: 0.3rem; /* Небольшой отступ сверху */
   line-height: 1.4;
 }
@@ -131,7 +144,9 @@ main {
   text-align: right;
 }
 
+/* ---------------- */
 /* GAPS */
+/* ---------------- */
 
 .small-gap {
   margin-bottom: var(--small-gap);
@@ -141,22 +156,23 @@ main {
   margin-bottom: var(--gap);
 }
 
+/* ---------------- */
 /* ROUNDNESS */
+/* ---------------- */
 
 .border-radius {
   border-radius: var(--border-radius);
 }
 
-
+/* ---------------- */
 /* CONTAINER */
+/* ---------------- */
 
 .container {
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 var(--gap);
 }
-
-
 
 .container--block {
   max-width: var(--container);
@@ -179,6 +195,21 @@ main {
   display: none;
 }
 
+.hero-section {
+  
+  align-items: center;
+  margin: var(--block-gap) auto;
+  max-width: var(--container);
+  padding: 4rem var(--gap);
+}
+
+.first-section {
+    padding: 4rem var(--gap);
+    margin: var(--block-gap) auto;
+    max-width: var(--container);
+}
+
+
 @media (max-width: 860px) {
   .grid {
     grid-template-columns: repeat(4, 1fr);
@@ -195,6 +226,11 @@ main {
 .cards-block__header {
   margin-bottom: var(--gap);
 }
+
+
+/* ---------------- */
+/* ABOUT ME */
+/* ---------------- */
 
 .about-time {
   display: grid;
@@ -221,8 +257,10 @@ main {
 }
 }
 
-
+/* ---------------- */
 /* Button effect */
+/* ---------------- */
+
 
 .button--effect {
   font-weight: 600;
@@ -250,8 +288,8 @@ main {
   align-items: center;
   
   /* Цвета для hover-эффекта */
-  color: #ffffff; 
-  background-color: #000; 
+  color: var(--color-background); 
+  background-color: var(--color-text); 
   
   /* Прячем в центр */
   clip-path: circle(0% at 50% 50%);

@@ -9,6 +9,18 @@
   gap: var(--gap);
 }
 
+
+@media (max-width: 860px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---------------- */
+/* Blog Card */
+/* ---------------- */
+
 .blog-card {
   display: block;
   text-decoration: none;
@@ -23,10 +35,19 @@
   padding: 1.25rem 0;
   border-radius: var(--border-radius);
   background: #fff;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.7;
 }
 
+.blog-card__inner:hover {
+  opacity: 1;
+  transform: scale(1.01);
+}
 
+.blog-card__inner:active {
+  opacity: 1;
+  transform: scale(0.98);
+}
 
 .blog-card__date {
   display: block;
@@ -42,56 +63,11 @@
 }
 
 
-
-
-@media (max-width: 860px) {
-  .blog-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.portfolio-grid > * {
-  grid-column: span 2;
-}
-
-@media (max-width: 860px) {
-  .portfolio-grid {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .portfolio-grid > * {
-    flex: 0 0 80vw;
-    max-width: 80vw;
-  }
-
-}
-
-.portfolio-section {
-  margin: var(--block-gap) auto;
-  max-width: var(--container);
-  padding: 0 var(--gap);
-}
-
-.hero-section {
-  
-  align-items: center;
-  margin: var(--block-gap) auto;
-  max-width: var(--container);
-  padding: 4rem var(--gap);
-}
-
-.first-section {
-    padding: 4rem var(--gap);
-    margin: var(--block-gap) auto;
-    max-width: var(--container);
-}
-
-
-
+/* ---------------- */
 /* Blog post layout */
+/* ---------------- */
+
+
 .post-header {
   max-width: var(--container);
   margin: var(--block-gap) auto;
@@ -123,7 +99,8 @@
   line-height: var(--p-post-line-height);
   font-size: var(--p-post-size);
   margin: 0 0 24px;
-  font-weight: 400;
+  font-weight: 450;
+  color: var(--color-main-text);
 }
 
 .post-content h2 {
@@ -194,7 +171,7 @@
 
 .post-toc a {
   display: block;
-  padding: 0.35rem 0 0.35rem var(--gap);
+  padding: 0.35rem 0 0.35rem var(--small-gap);
   font-size: var(--p-post-size);
   font-weight: 400;
   color: #666;
@@ -212,13 +189,13 @@
 .post-toc a.is-active,
 .post-toc a[aria-current="true"] {
   opacity: 1;
-  color: #111;
+  color: var(--color-text);
   font-weight: 500;
   border-left: 2px solid #333;
 }
 
 li.toc-item-h3 a {
-  padding-left: calc(var(--gap) + 1rem);
+  padding-left: calc(var(--small-gap) + 1rem);
 }
 
 
