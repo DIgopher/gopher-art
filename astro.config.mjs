@@ -6,10 +6,12 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx()],
-  site: 'https://digopher.github.io',
-  base: '/gopher-art/',
-  trailingSlash: 'always', // Принудительно добавлять слэш в конце ссылок
+  site: 'https://gopherart.com', // 1. Меняем старый адрес на ваш новый личный домен
+  
+  // base: '/gopher-art/',        // 2. ЭТУ СТРОКУ НУЖНО УДАЛИТЬ (или закомментировать)
+  
+  trailingSlash: 'always', 
   build: {
-    format: 'directory' // Собирать страницы как folder/index.html
+    format: 'directory' 
   }
 });
