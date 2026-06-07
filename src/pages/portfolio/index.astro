@@ -5,6 +5,10 @@ import { getCollection } from "astro:content";
 import { sortCollectionByDateDesc } from "../../utils/sortCollectionByDateDesc";
 
 const projects = sortCollectionByDateDesc(await getCollection("projects"));
+
+const sortedProjects = projects.toSorted((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
 ---
 
 <BaseLayout>
@@ -18,7 +22,7 @@ const projects = sortCollectionByDateDesc(await getCollection("projects"));
   <div class="grid container">
     <div class="portfolio-full">
       {
-        projects.map((project) => (
+        sortedProjects.map((project) => (
           <ProjectCardWide
             title={project.data.title}
             slug={project.id}

@@ -6,15 +6,23 @@ const { title, slug, cover, description } = Astro.props;
   <article class="card">
     {cover && <img src={cover.src} alt={title} class="card-image" />}
     <div class="card-overlay">
-      <h3 class="card-title p">{title}</h3>
+      <h3 class="card-title p uppercase">{title}</h3>
       {description && <p class="card-description p--small">{description}</p>}
       <div class="card-arrow">
-       <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M34 18.061L0 18.061" stroke="black" stroke-width="3"/>
-<path d="M17 1.06055L33.9998 18.0605L17.0002 35.0609" stroke="black" stroke-width="3"/>
-</svg>
-
-</div>
+        <svg
+          width="37"
+          height="37"
+          viewBox="0 0 37 37"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M34 18.061L0 18.061" stroke="black" stroke-width="3"></path>
+          <path
+            d="M17 1.06055L33.9998 18.0605L17.0002 35.0609"
+            stroke="black"
+            stroke-width="3"></path>
+        </svg>
+      </div>
     </div>
   </article>
 </a>

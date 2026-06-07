@@ -11,6 +11,7 @@ const projects = defineCollection({
       tags: z.array(z.string()),
       cover: image().optional(),
       description: z.string().optional(),
+      featured: z.boolean().default(false),
     }),
 });
 
@@ -26,7 +27,33 @@ const blog = defineCollection({
   }),
 });
 
+const comics = defineCollection({
+  loader: glob({ base: "./src/content/comics", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    description: z.string().optional(),
+    order: z.number().default(0),
+  }),
+});
+
+const comicChapters = defineCollection({
+  loader: glob({ base: "./src/content/comicChapters", pattern: "**/*.{md,mdx}" }),
+  schema: ({ image }) =>
+    z.object({
+      comic: z.string(),
+      slug: z.string(),
+      title: z.string(),
+      description: z.string().optional(),
+      order: z.number().default(0),
+      preview: image().optional(),
+    }),
+});
+
+
 export const collections = {
   projects,
   blog,
+  comics,
+  comicChapters,
 };

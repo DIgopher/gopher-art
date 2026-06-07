@@ -1,108 +1,69 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { promises as fs } from "fs";
-import path from "path";
-import matter from "gray-matter"; // Импортируем парсер для фронтметтера
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
+const pageImages = import.meta.glob(
+  "../../../content/comicChapters/**/*.{jpg,jpeg,png,webp,avif}",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+
 export async function getStaticPaths() {
-  const comicsRoot = path.join(process.cwd(), "public", "comics");
-  const comicDirs = await fs.readdir(comicsRoot, { withFileTypes: true });
-  const paths = [];
+  const chapters = await getCollection("comicChapters");
 
-  for (const comicDir of comicDirs) {
-    if (!comicDir.isDirectory()) continue;
-    const comic = comicDir.name;
-    const chaptersRoot = path.join(comicsRoot, comic);
-    const chapterDirs = await fs.readdir(chaptersRoot, { withFileTypes: true });
-
-    for (const chapterDir of chapterDirs) {
-      if (!chapterDir.isDirectory()) continue;
-      const chapter = chapterDir.name;
-      paths.push({ params: { comic, chapter } });
-    }
-  }
-  return paths;
+  return chapters.map((chapter) => ({
+    params: {
+      comic: chapter.data.comic,
+      chapter: chapter.data.slug,
+    },
+    props: {
+      chapter,
+    },
+  }));
 }
 
-const { comic, chapter } = Astro.params;
-const comicsRoot = path.join(process.cwd(), "public", "comics");
-const chapterDir = path.join(comicsRoot, comic, chapter);
-const comicDir = path.join(comicsRoot, comic);
+const { chapter } = Astro.props;
 
-// 1. Читаем файл с описанием главы (предположим, он называется description.md)
-// Если файл называется иначе (например, info.txt или meta.md), замените имя ниже
-const metaFilePath = path.join(chapterDir, "meta.md");
-let chapterMeta = { title: chapter, description: "", preview: "" };
+const comicSlug = chapter.data.comic;
+const chapterSlug = chapter.data.slug;
 
-try {
-  const metaContent = await fs.readFile(metaFilePath, "utf-8");
-  const { data } = matter(metaContent); // Извлекаем данные из --- ---
-  chapterMeta = { ...chapterMeta, ...data };
-} catch (e) {
-  console.warn(
-    `Не найден файл описания в ${chapterDir}, используем имя папки.`,
-  );
-}
+const comics = await getCollection("comics");
+const comic = comics.find((item) => item.data.slug === comicSlug);
 
-// 1. Читаем файл с описанием комикса
+const comicMeta = {
+  title: comic?.data.title ?? comicSlug,
+  description: comic?.data.description ?? "",
+};
 
-const comicMetaFilePath = path.join(comicDir, "meta.md");
-let comicMeta = { title: comic, description: "" };
+const chapterMeta = {
+  title: chapter.data.title,
+  description: chapter.data.description ?? "",
+};
 
-try {
-  const comicMetaContent = await fs.readFile(comicMetaFilePath, "utf-8");
-  const { data } = matter(comicMetaContent); // Извлекаем данные из --- ---
-  comicMeta = { ...comicMeta, ...data };
-} catch (e) {
-  console.warn(`Не найден файл описания в ${comicDir}, используем имя папки.`);
-}
+const chapterPath = `../../../content/comicChapters/${comicSlug}/${chapterSlug}/`;
 
-// 2. Получаем только файлы картинок.
-// Так как нумерация '01, 02...', стандартного метода .sort() теперь абсолютно достаточно!
-const rawFiles = await fs.readdir(chapterDir);
-const imageFiles = rawFiles
-  .filter((file) => /\.(png|jpe?g|webp|gif)$/i.test(file))
-  .sort();
+const pages = Object.entries(pageImages)
+  .filter(([path]) => path.startsWith(chapterPath))
+  .filter(([path]) => !path.includes("cover."))
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, image]) => image);
 
-// 3. Формируем ссылки на картинки
-const images = imageFiles.map(
-  (file) =>
-    `${baseUrl}/comics/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/${encodeURIComponent(file)}`,
-);
+const images = pages.map((image) => image.src);
 
-// 4. Получаем список всех глав комикса для навигации
-const chapterDirs = (
-  await fs.readdir(path.join(comicsRoot, comic), { withFileTypes: true })
-)
-  .filter((f) => f.isDirectory())
-  .map((f) => f.name)
-  .sort(); // Здесь тоже достаточно стандартной сортировки
+const allChapters = await getCollection("comicChapters");
 
-// 5. Собираем ссылки на главы.
-// Для красивого названия (label) теперь можно использовать данные из мета-файла каждой главы
-const chapterLinks = await Promise.all(
-  chapterDirs.map(async (name) => {
-    const currentChapterMetaPath = path.join(
-      comicsRoot,
-      comic,
-      name,
-      "meta.md",
-    );
-    let label = name; // Фолбэк на имя папки
-
-    try {
-      const content = await fs.readFile(currentChapterMetaPath, "utf-8");
-      const { data } = matter(content);
-      if (data.title) label = data.title;
-    } catch (e) {
-      // Файла нет, оставляем имя папки
-    }
-
-    return { name, label };
-  }),
-);
+const chapterLinks = allChapters
+  .filter((item) => item.data.comic === comicSlug)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((item) => ({
+    name: item.data.slug,
+    label: item.data.title,
+  }));
 ---
 
 <BaseLayout extraNav="flex">
@@ -139,9 +100,9 @@ const chapterLinks = await Promise.all(
         chapterLinks.map((item) => (
           <li>
             <a
-              href={`${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(item.name)}/`}
+              href={`${baseUrl}/comic/${encodeURIComponent(comicSlug)}/${encodeURIComponent(item.name)}/`}
               class={
-                item.name === chapter
+                item.name === chapterSlug
                   ? "is-active button--effect"
                   : "button--effect"
               }

@@ -1,6 +1,9 @@
 ---
-const { comic, chapter, label, description, preview, baseUrl } = Astro.props;
-const chapterUrl = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/`;
+import { Image } from "astro:assets";
+
+const { comic, chapter, label, description, preview } = Astro.props;
+
+const chapterUrl = `/comic/${encodeURIComponent(comic)}/${encodeURIComponent(chapter)}/`;
 ---
 
 <article class="comic-chapter-preview">
@@ -11,16 +14,20 @@ const chapterUrl = `${baseUrl}/comic/${encodeURIComponent(comic)}/${encodeURICom
   >
     {
       preview ? (
-        <img src={preview} alt={`Превью ${label}`} loading="lazy" />
+        <Image
+          src={preview}
+          alt={`Превью ${label}`}
+          loading="lazy"
+          class="comic-chapter-preview__image"
+        />
       ) : (
         <div class="comic-chapter-preview__empty">Нет превью</div>
       )
     }
   </a>
+
   <div class="comic-chapter-preview__info">
-    <p class="h3 small-gap text-center">
-      {label}
-    </p>
+    <p class="h3 small-gap text-center">{label}</p>
     {description && <p class="p--small grey text-center">{description}</p>}
   </div>
 </article>

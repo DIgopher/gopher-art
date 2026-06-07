@@ -3,8 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 import { sortCollectionByDateDesc } from "../utils/sortCollectionByDateDesc";
+import HomeComicSection from "../components/HomeComicSection.astro";
 
 const projects = sortCollectionByDateDesc(await getCollection("projects"));
+
+const featuredProjects = projects
+  .filter((project) => project.data.featured)
+  .toSorted((a, b) => {
+    return b.data.date.getTime() - a.data.date.getTime();
+  });
 ---
 
 <BaseLayout>
@@ -21,10 +28,17 @@ const projects = sortCollectionByDateDesc(await getCollection("projects"));
   </section>
 
   <section class="portfolio-section">
-    <h2 class="h1 cards-block__header">Проекты</h2>
+    <div class="portfolio-section__header cards-block__header">
+      <h2 class="h1">Проекты</h2>
+      <button class="portfolio-section__header__button p"
+        ><a href={`${import.meta.env.BASE_URL}portfolio/`}>Все проекты</a
+        ></button
+      >
+    </div>
+
     <div class="portfolio-grid">
       {
-        projects.map((project) => (
+        featuredProjects.map((project) => (
           <ProjectCard
             title={project.data.title}
             slug={project.id}
@@ -35,4 +49,5 @@ const projects = sortCollectionByDateDesc(await getCollection("projects"));
       }
     </div>
   </section>
+  <HomeComicSection />
 </BaseLayout>

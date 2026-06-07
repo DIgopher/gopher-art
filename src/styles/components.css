@@ -227,6 +227,31 @@ main {
   margin-bottom: var(--gap);
 }
 
+.portfolio-section__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.portfolio-section__header__button {
+  background-color: var(--color-text);
+  padding: 0 2rem;
+  color: var(--color-background);
+  border-radius: 1rem;
+  min-height: 2.5rem;
+  transition: transform 0.2s ease;
+  
+}
+
+.portfolio-section__header__button:hover {
+  transform: scale(1.02);
+}
+
+.portfolio-section__header__button:active {
+  transform: scale(0.97);
+} 
 
 /* ---------------- */
 /* ABOUT ME */
@@ -301,3 +326,4 @@ main {
 .button--effect:hover::before {
   clip-path: circle(80% at 50% 50%);
 }
+

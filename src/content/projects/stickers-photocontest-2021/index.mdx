@@ -1,0 +1,37 @@
+---
+title: "Стикеры для фотоконкурса СК БФ в\u00A02021 году"
+date: 2020-12-10
+tags: ["Стикеры", "Проект"]
+cover: "./snippet.webp"
+description: "Мой первый стикерпак для\u00A0победителей фотоконкурса биологического факультета."
+---
+
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+import ProjectColumnImages from '../../../components/project/ProjectColumnImages.astro';
+import ProjectVideo from '../../../components/project/ProjectVideo.astro';
+import Grid from '../../../components/project/Grid.astro';
+
+import hero from "./hero.webp"
+import stickerpack from "./stickerpack.webp"
+
+<ProjectHero src={hero} alt="Стикеры из стикерпака для фотоконкурса 2021 года" />
+
+<ProjectHeader 
+  title={frontmatter.title}
+  category="Проект"
+  type="Стикеры"
+  year="2020"
+>
+  <p>Это был мой первый стикерпак. Когда я отвечала за дизайн в студенческом комитете биологического факультета - меня позвали также сделать стикерпак для победителей и призеров фотоконкурса, который проводил СК.</p>
+  <p>Мне дали полную свободу для идей, но попросили делать стикеры в тематики биологии. Я также сделала их в стилистике самого СК, который тогда разработала.</p>
+</ProjectHeader>
+
+<Grid>
+<ProjectImage src={stickerpack} alt="Логотип СК БФ" />
+</Grid>

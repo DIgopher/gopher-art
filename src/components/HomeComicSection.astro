@@ -1,0 +1,41 @@
+---
+import ComicChapterCard from "./ComicChapterCard.astro";
+import { getCollection } from "astro:content";
+
+const comics = await getCollection("comics");
+const chapters = await getCollection("comicChapters");
+
+const comic = comics.find((comic) => comic.data.slug === "insight-de");
+
+const comicChapters = chapters
+  .filter((chapter) => chapter.data.comic === "insight-de")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+{
+  comic && (
+    <section class="comic-index container">
+      <div class="comic-list">
+        <article class="comic-card">
+          <h2 class="h1 small-gap">{comic.data.title}</h2>
+
+          {comic.data.description && (
+            <p class="subheader gap">{comic.data.description}</p>
+          )}
+
+          <div class="comic-chapters">
+            {comicChapters.map((chapter) => (
+              <ComicChapterCard
+                comic={comic.data.slug}
+                chapter={chapter.data.slug}
+                label={chapter.data.title}
+                description={chapter.data.description}
+                preview={chapter.data.preview}
+              />
+            ))}
+          </div>
+        </article>
+      </div>
+    </section>
+  )
+}

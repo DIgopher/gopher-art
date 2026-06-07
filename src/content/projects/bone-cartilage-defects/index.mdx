@@ -1,0 +1,28 @@
+---
+title: "Иллюстрации для статьи Advanced therapeutic medicinal products in bone and cartilage defects"
+date: 2023-04-25
+tags: ["Научная иллюстрация", "Проект"]
+cover: "./snippet.webp"
+description: "Иллюстрации для научной статьи о\u00A0взаимодействии экзосом и\u00A0внеклеточного матрикса."
+---
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+
+import hero from "./hero.webp"
+
+<ProjectHero src={hero} alt="Advanced therapeutic medicinal products in bone and cartilage defects" />
+
+<ProjectHeader 
+  title={frontmatter.title}
+  category="Проект"
+  type="Научная иллюстрация"
+  year="2024"
+>
+  <p>Вместе с коллегами я написала обзор на тему везикул, к которому нужно было подготовить иллюстрации.</p>
+  <p>Основными задачами было сделать иллюстрации к каждому разделу статьи, в едином стиле и информативными, что тоже создавало некоторые сложности.</p>
+</ProjectHeader>

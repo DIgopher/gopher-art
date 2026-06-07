@@ -1,0 +1,54 @@
+---
+title: "Иллюстрации для статьи 3D models to study therapy-induced senescence: where do we stand now?"
+date: 2023-06-28
+tags: ["Научная иллюстрация", "Проект"]
+cover: "./snippet.webp"
+description: "Иллюстрации для научной статьи о\u00A0взаимодействии экзосом и\u00A0внеклеточного матрикса."
+---
+import ProjectHero from '../../../components/project/ProjectHero.astro';
+import ProjectHeader from '../../../components/project/ProjectHeader.astro';
+import ProjectLayout from '../../../components/project/ProjectLayout.astro';
+import ProjectBlock from '../../../components/project/ProjectBlock.astro';
+import ProjectText from '../../../components/project/ProjectText.astro';
+import ProjectInfo from '../../../components/project/ProjectInfo.astro';
+import ProjectImage from '../../../components/project/ProjectImage.astro';
+
+import hero from "./hero.webp"
+import fig1 from "./fig1.webp"
+import fig2 from "./fig2.webp"
+import fig3 from "./fig3.webp"
+
+<ProjectHero src={hero} alt="3D models to study therapy-induced senescence: where do we stand now?" />
+
+<ProjectHeader 
+  title={frontmatter.title}
+  category="Проект"
+  type="Научная иллюстрация"
+  year="2024"
+>
+  <p>Вместе с коллегами я написала обзор на тему везикул, к которому нужно было подготовить иллюстрации.</p>
+  <p>Основными задачами было сделать иллюстрации к каждому разделу статьи, в едином стиле и информативными, что тоже создавало некоторые сложности.</p>
+</ProjectHeader>
+
+<ProjectLayout>
+
+    <ProjectImage slot="left" mobileOrder={3} src={fig1} alt="ECM-bound EVs and Matrix vesicles" />
+    
+    <ProjectText slot="right" mobileOrder={4} variant="large">
+      Ох уж эти иллюстрации для статей
+    </ProjectText>
+
+    <ProjectImage slot="right" mobileOrder={5} src={fig2} alt="EVs effect on ECM" />
+
+    <ProjectText slot="left" mobileOrder={6} variant="normal">
+      В процессе работы я анализировала как такие же процессы визуализируются в других статьях, выделяла основные аспекты текущего обзора. Всё это было нужно, чтобы получить иллюстрации, на основании которых читатель мог получить достаточно полную информацию о том, что он найдет в обзоре.
+    </ProjectText>
+
+    <ProjectImage slot="right" mobileOrder={5} src={fig3} alt="EVs effect on ECM" />
+</ProjectLayout>
+
+<ProjectInfo>
+  <p>Работа над иллюстрациями велась в Procreate и Figma.</p>
+  <p>Обзорная статья была опубликована 21 июля 2024 года.<br/>
+  <a href="https://doi.org/10.1007/s10616-025-00774-y" style="text-decoration: underline; color: #111;">Ссылка на публикацию</a></p>
+</ProjectInfo>
