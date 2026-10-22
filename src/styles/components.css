@@ -191,6 +191,18 @@ main {
   grid-column: 2 / 6;
 }
 
+.cols6 {
+  grid-column: 1 / 7;
+}
+
+.cols3--left {
+  grid-column: 1 / 4;
+}
+
+.cols3--right {
+  grid-column: 4 / 7;
+}
+
 .mobile-only {
   display: none;
 }
@@ -218,6 +230,14 @@ main {
   .cols4 {
   grid-column: 1 / 5;
   }
+
+  .cols3--left {
+  grid-column: 1 / 5;
+}
+
+.cols3--right {
+  grid-column: 1 / 5;
+}
 
 }
 
