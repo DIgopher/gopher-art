@@ -106,7 +106,7 @@
 }
 
 .card-description {
-  color: var(--color-background);
+  color: rgb(255 255 255 / 0.85);
   margin: 0 0 1rem 0;
 }
 
@@ -232,31 +232,32 @@
 .project-header__category {
   font-size: var(--subheader-size);
   line-height: var(--subheader-line-height);
-  color: var(--color-text);
-  opacity: 0.6;
+  color: var(--color-light-grey);
   margin-bottom: var(--small-gap);
+  font-weight: 500;
 }
 
 .project-header__title {
   font-size: var(--h2);
   line-height: var(--h2-line-height);
-  font-weight: 500;
+  font-weight: 450;
   margin-bottom: var(--small-gap);
 }
 
 .project-header__meta {
   display: flex;
   gap: var(--gap);
-  color: var(--color-text);
-  opacity: 0.6;
+  color: var(--color-light-grey);
   font-size: var(--subheader-size);
   line-height: var(--subheader-line-height);
   margin-bottom: var(--medium-gap);
+  font-weight: 500;
 }
 
 .project-header__intro {
   font-size: var(--p-size);
   line-height: var(--p-line-height);
+  font-weight: 425;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
@@ -365,12 +366,15 @@
   font-size: var(--p-size);
   line-height: var(--p-line-height);
   color: var(--color-text);
+  font-weight: 425;
 }
 
 .project-text__caption {
   font-size: var(--p-small-size);
   line-height: var(--p-small-line-height);
-  opacity: 0.6;
+  color: var(--color-light-grey);
+  font-weight: 500;
+  
 }
 
 .project-text__body {

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -12,7 +13,10 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const hasTocHeadings = headings.some(
+  ({ depth }) => depth === 2 || depth === 3,
+);
 const formattedPostDate = post.data.date
   ? new Date(post.data.date).toLocaleDateString("ru-RU", {
       day: "2-digit",
@@ -23,19 +27,34 @@ const formattedPostDate = post.data.date
 ---
 
 <BaseLayout extraNav="flex">
-  <button
-    slot="navbarControls"
-    id="toc-toggle"
-    class="toc-toggle"
-    aria-label="Показать содержание"
-  >
-    <img
-      style="width: 28px; height: 28px;"
-      src={`${import.meta.env.BASE_URL}blog.svg`}
-      alt="Blog content button"
-    />
-  </button>
+  {
+    hasTocHeadings && (
+      <button
+        slot="navbarControls"
+        id="toc-toggle"
+        class="toc-toggle"
+        aria-label="Показать содержание"
+      >
+        <img
+          style="width: 28px; height: 28px;"
+          src={`${import.meta.env.BASE_URL}blog.svg`}
+          alt="Blog content button"
+        />
+      </button>
+    )
+  }
   <header class="post-header grid">
+    {
+      post.data.cover && (
+        <div class="post-cover cols4">
+          <Image
+            src={post.data.cover}
+            alt={`Обложка: ${post.data.title}`}
+            class="post-cover__image"
+          />
+        </div>
+      )
+    }
     <div class="cols4">
       <div>
         <h1 class="h1">{post.data.title}</h1>
@@ -49,20 +68,27 @@ const formattedPostDate = post.data.date
       <Content />
     </article>
 
-    <aside class="post-toc" aria-label="Содержание поста">
-      <div class="chapter-toc__header">
-        <h3>Содержание</h3>
-        <button
-          class="chapter-toc-toggle toc-toggle"
-          aria-label="Cкрыть содержание"
-          ><img src={`${import.meta.env.BASE_URL}cancel.svg`} alt="" /></button
-        >
-      </div>
-      <nav>
-        <ul id="toc-list"></ul>
-      </nav>
-    </aside>
-    <div class="blur-overlay" id="toc-overlay"></div>
+    {
+      hasTocHeadings && (
+        <>
+          <aside class="post-toc" aria-label="Содержание поста">
+            <div class="chapter-toc__header">
+              <h3>Содержание</h3>
+              <button
+                class="chapter-toc-toggle toc-toggle"
+                aria-label="Cкрыть содержание"
+              >
+                <img src={`${import.meta.env.BASE_URL}cancel.svg`} alt="" />
+              </button>
+            </div>
+            <nav>
+              <ul id="toc-list"></ul>
+            </nav>
+          </aside>
+          <div class="blur-overlay" id="toc-overlay"></div>
+        </>
+      )
+    }
   </div>
 
   <script type="module">

@@ -7,6 +7,7 @@
   --color-grey: #666;
   --color-main-text:#1c1c1c;
   --color-light-grey:#888;
+  --color-pale-grey:#bbb;
 
   --container-nav: 77rem;
 
@@ -100,13 +101,13 @@ main {
   font-size: var(--p-size);
   line-height: var(--p-line-height);
   color: var(--color-text);
-  font-weight: 400;
+  font-weight: 425;
 }
 
 .p--small {
   font-size: var(--p-small-size);
   line-height: var(--p-small-line-height);
-  font-weight: 400;
+  font-weight: 450;
 }
 
 .grey {

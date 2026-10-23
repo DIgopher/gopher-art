@@ -19,12 +19,14 @@ const projects = defineCollection({
 
 const blog = defineCollection({
   loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
-  schema: z.object({
-    title: z.string(),
-    date: z.date(),
-    tags: z.array(z.string()),
-    description: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      tags: z.array(z.string()),
+      cover: image().optional(),
+      description: z.string().optional(),
+    }),
 });
 
 const comics = defineCollection({

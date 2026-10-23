@@ -1,6 +1,8 @@
 ---
-const { title, slug, date, description } = Astro.props;
-const url = `${import.meta.env.BASE_URL}blog/${slug}/`;
+import { Image } from "astro:assets";
+
+const { title, slug, date, description, cover } = Astro.props;
+const url = `${import.meta.env.BASE_URL}blog/${encodeURIComponent(slug)}/`;
 const formattedDate = date
   ? new Date(date).toLocaleDateString("ru-RU", {
       day: "2-digit",
@@ -12,10 +14,24 @@ const formattedDate = date
 
 <a href={url} class="blog-card blog-card-hover">
   <div class="blog-card__inner">
+    {
+      cover && (
+        <Image
+          src={cover}
+          alt={`Обложка: ${title}`}
+          class="blog-card__cover"
+          loading="lazy"
+        />
+      )
+    }
     <div class="blog-card__top">
-      <time class="blog-card__date subheader">{formattedDate}</time>
-      <h3 class="blog-card__title h2">{title}</h3>
-      {description && <p class="blog-card__description p">{description}</p>}
+      <time class="blog-card__date p--small">{formattedDate}</time>
+      <h3 class="blog-card__title p">{title}</h3>
+      {
+        description && (
+          <p class="blog-card__description p--small">{description}</p>
+        )
+      }
     </div>
   </div>
 </a>
