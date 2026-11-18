@@ -157,7 +157,7 @@
   margin: var(--gap) 0;
 }
 
-.post-content blockquote p {
+.post-content blockquote p:last-child {
   margin: 0;
 }
 
